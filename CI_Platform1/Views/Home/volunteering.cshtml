@@ -1,0 +1,753 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<partial name="Navbar1" />
+
+<partial name="Navbar2" />
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href='https://fonts.googleapis.com/css?family=Noto Sans' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="/css/volunteering.css">
+</head>
+
+<body>
+
+
+    <div class="container mt-3">
+        <div class="row ">
+            <div class="col-12 col-lg-6 col-md-12 col-sm-12  p-1">
+
+                <!-- Full-width images with number text -->
+                <div class="mySlides" style="display: none;">
+                    <div class="numbertext">1 / 4</div>
+                    <img src="/Images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-3.png"
+                        style="width:100%; height: 54vh;">
+                </div>
+
+                <div class="mySlides" style="display: none;">
+                    <div class="numbertext">2 / 4</div>
+                    <img src="/Images/img1.png" style="width:100%; height: 54vh;">
+                </div>
+
+                <div class="mySlides" style="display: none;">
+                    <div class="numbertext">3 / 4</div>
+                    <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
+                        style="width:100%; height: 54vh;">
+                </div>
+
+                <div class="mySlides" style="display: block;">
+                    <div class="numbertext">4 / 4</div>
+                    <img src="/Images/img11.png" style="width:100%; height: 54vh;">
+                </div>
+
+                <!-- Thumbnail images -->
+                <div class="row mt-3">
+                    <div class="column" style="width:25%">
+                        <img class="demo cursor"
+                            src="../Images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png" style="width:100%"
+                            onclick="currentSlide(1)" alt="The Woods">
+                    </div>
+                    <div class="column" style="width:25%">
+                        <img class="demo cursor" src="../Images/img1.png" style="width:100%" onclick="currentSlide(2)"
+                            alt="Cinque Terre">
+                    </div>
+                    <div class="column" style="width:25%">
+                        <img class="demo cursor"
+                            src="../Images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"
+                            style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
+                    </div>
+                    <div class="column" style="width:25%">
+                        <img class="demo cursor active" src="../Images/img11.png" style="width:100%"
+                            onclick="currentSlide(4)" alt="Northern Lights">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 col-md-12 col-sm-12 p-4 ">
+                <div class="font fs-1">CSR initiative stands for Coffee & Farmer Equity</div>
+                <div class="font fs-5 mt-2 ">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.
+                </div>
+
+                <div class="rule mt-3">
+                    <hr>
+                    <button class="hrbtn">Plant 10,000 Trees</button>
+                    <hr>
+                </div>
+
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="d-flex flex-row align-items-center ms-5">
+                        <img src="../Images/Seats-left.png" alt="" class="" height="30px" width="30px">
+                        <div class="d-flex flex-column ms-2">
+                            <p class="d-inline mb-0 pt-2">10</p>
+                            <p class="seat">Seats Left</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center">
+                        <img src="../Images/mission.png" height="33px" width="33px" alt="">
+                        <div class="d-flex flex-column ms-2">
+                            <!-- <p class=" mb-0 pt-2">12/03/2023 </p> -->
+                            <div class="progress mt-3 bar me-4">
+                                <div class="progress-bar d-inline pt-2" role="progressbar" style="width: 75%"
+                                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <p class="seat">8000 Achieved</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr>
+                <div class="row ">
+                    <button class="btn col ton me-3" type="button">
+                        <i class="bi bi-heart"></i>
+                        <span>Add to Favourite</span>
+                    </button>
+                    <button class="btn col ton " type="button">
+                        <i class="bi bi-square-fill"></i>
+                        <span class="font-si">Recommend to a Co-Worker</span>
+                    </button>
+                </div>
+
+                <div class="rule mt-3">
+                    <hr>
+                    <button class="hrbtn">
+                        <div class="text-center">
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                        </div>
+                    </button>
+                    <hr>
+                </div>
+
+
+
+                <div class="row gap-2 mt-3">
+                    <div class="column border col">
+                        <i class="bi bi-geo-alt"></i>
+                        <div class="mt-2 text-secondary">city</div>
+                        <div>London</div>
+                    </div>
+                    <div class="column border col ">
+                        <i class="bi bi-globe"></i>
+                        <div class="mt-2 text-secondary">Theme</div>
+                        <div>Environment</div>
+                    </div>
+                    <div class="column border col ">
+                        <i class="bi bi-geo-alt"> </i>
+                        <div class="mt-2 text-secondary mt-auto">Date</div>
+                        <div class="mt-auto mb-1">Ongoing Opportunity</div>
+                    </div>
+                    <div class="column border col ">
+                        <!-- <img src="../Images/organization.png" alt=""> -->
+                        <i class="bi bi-people alt"></i>
+                        <div class="mt-2 text-secondary mb-auto">Organization</div>
+                        <div class="mt-auto mb-1">CSE Network</div>
+                    </div>
+
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="#" class="btn cardbtn mx-auto "><span>Apply Now</span> <img class="ms-1"
+                            src="/Images/right-arrow.png"></a>
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-12 col-xl-7 col-lg-7 col-md-12 col-sm-12">
+
+                <div class="wrapper  tabb">
+
+                    <div class="tabs">
+                        <div class="tab " data-tab-content="tab1-content">Missions</div>
+                        <div class="tab" data-tab-content="tab2-content">Organization</div>
+                        <div class="tab active" data-tab-content="tab3-content">Comments</div>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="tab-content-item " id="tab1-content">
+                            <h2>Introduction</h2>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae nesciunt, ducimus
+                                sapiente dolores eligendi, iusto impedit amet ipsa, incidunt eaque nostrum a aliquid
+                                ere distinctio! Laboriosam soluta magni asperiores molestiae enim perspiciatis
+                                temporibus.
+                                Accusamus similique
+                            <p>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae nesciunt, ducimus
+                                sapiente dolores eligendi, iusto impedit amet ipsa, incidunt eaque nostrum a aliquid
+                                assumenda libero!nda libero! Lorem ipsum dolor sit amet consectetur adipisicr
+                                adipisicing elit. Vitae nesciunt, ducimus
+                                sapiente dolores eligendi, iusto impedit amet
+                            <p>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae nesciunt, ducimus
+                                sapiente dolores eligendi, iusto impedit amet ipsa, incidunt eaque nostrum a aliquid
+                                assumenda libero!
+                            <p>
+
+                            <h2>Challenge</h2>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae nesciunt, ducimus
+                                sapiente dolores eligendi, iusto impedit amet ipsa, incidunt eaque nostrum a aliquid
+                                ere distinctio! Laboriosam soluta magni asperiores molestiae enim perspiciatis
+                                temporibus.
+                                Accusamus similique
+                            <p>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae nesciunt, ducimus
+                                sapiente dolores eligendi, iusto impedit amet ipsa, incidunt eaque nostrum a aliquid
+                                assumenda libero!nda libero! Lorem ipsum dolor sit amet consectetur adipisicr
+                                adipisicing elit. Vitae nesciunt, ducimus
+                                sapiente dolores eligendi, iusto impedit amet
+                            <p>
+
+                            <h2>Documents</h2>
+                            <div class="row mb-2">
+                                <div class="mt-1 column">
+                                    <a href="#" class="btn pdf  "><img class="me-1"
+                                            src="/Images/pdf.png"><span>Application</span> </a>
+                                </div>
+
+                                <div class="mt-1 column">
+                                    <a href="#" class="btn pdf  "><img class="me-1"
+                                            src="/Images/pdf.png"><span>Application</span> </a>
+                                </div>
+
+                                <div class="mt-1 column">
+                                    <a href="#" class="btn pdf  "><img class="me-1"
+                                            src="/Images/pdf.png"><span>Application</span> </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="tab-content-item" id="tab2-content">
+                            <h2>Organization</h2>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae nesciunt, ducimus
+                                sapiente dolores eligendi, iusto impedit amet ipsa, incidunt eaque nostrum a aliquid
+                                assumenda libero! dolores eligendi, iusto impedit amet ipsa, incidunt eaque nostrum a aliquid
+                                assumenda libero!
+                            <p>
+                           
+
+                        </div>
+
+                        @*............................comments................................*@
+                        <div class="tab-content-item active" id="tab3-content">
+                            <h5>Comments</h5>
+                            <div class="input-group mt-3 mb-3">
+                                <textarea class="form-control" aria-label="With textarea"
+                                    placeholder="Enter your comments..."></textarea>
+                            </div>
+                            <button class="btnApply rounded-pill">Post Comment</button>
+
+                            <div class="panel mt-3" id="result_panel">
+                                <div class="panel-body">
+                                    <ul class="list-group">
+
+
+                                        <li class="list-group-item d-flex">
+                                            <img src="/images/volunteer1.png" class="rounded-circle"
+                                                style="height:60px;width:60px" />
+                                            <div class="ms-2">
+                                                <p style="font-size:15px" class="m-0"><strong>Margeret Walsah</strong>
+                                                </p>
+                                                <p style="font-size:10px" class="m-0">Monday, October 211,2019, 4:57 PM
+                                                </p>
+                                                <p>Nice mission great opportunity for people</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex">
+                                            <img src="/images/volunteer2.png" class="rounded-circle"
+                                                style="height:60px;width:60px" />
+                                            <div class="ms-2">
+                                                <p style="font-size:15px" class="m-0"><strong>Margeret Walsah</strong>
+                                                </p>
+                                                <p style="font-size:10px" class="m-0">Monday, October 211,2019, 4:57 PM
+                                                </p>
+                                                <p>Nice mission great opportunity for people</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex">
+                                            <img src="/images/volunteer3.png" class="rounded-circle"
+                                                style="height:60px;width:60px" />
+                                            <div class="ms-2">
+                                                <p style="font-size:15px" class="m-0"><strong>Margeret Walsah</strong>
+                                                </p>
+                                                <p style="font-size:10px" class="m-0">Monday, October 211,2019, 4:57 PM
+                                                </p>
+                                                <p>Nice mission great opportunity for people</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex">
+                                            <img src="../Images/volunteer4.png" class="rounded-circle"
+                                                style="height:60px;width:60px" />
+                                            <div class="ms-2">
+                                                <p style="font-size:15px" class="m-0"><strong>Margeret Walsah</strong>
+                                                </p>
+                                                <p style="font-size:10px" class="m-0">Monday, October 211,2019, 4:57 PM
+                                                </p>
+                                                <p>Nice mission great opportunity for people</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex">
+                                            <img src="../Images/volunteer5.png" class="rounded-circle"
+                                                style="height:60px;width:60px" />
+                                            <div class="ms-2">
+                                                <p style="font-size:15px" class="m-0"><strong>Margeret Walsah</strong>
+                                                </p>
+                                                <p style="font-size:10px" class="m-0">Monday, October 211,2019, 4:57 PM
+                                                </p>
+                                                <p>Nice mission great opportunity for people</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex">
+                                            <img src="../Images/volunteer6.png" class="rounded-circle"
+                                                style="height:60px;width:60px" />
+                                            <div class="ms-2">
+                                                <p style="font-size:15px" class="m-0"><strong>Margeret Walsah</strong>
+                                                </p>
+                                                <p style="font-size:10px" class="m-0">Monday, October 211,2019, 4:57 PM
+                                                </p>
+                                                <p>Nice mission great opportunity for people</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex">
+                                            <img src="../Images/volunteer7.png" class="rounded-circle"
+                                                style="height:60px;width:60px" />
+                                            <div class="ms-2">
+                                                <p style="font-size:15px" class="m-0"><strong>Margeret Walsah</strong>
+                                                </p>
+                                                <p style="font-size:10px" class="m-0">Monday, October 211,2019, 4:57 PM
+                                                </p>
+                                                <p>Nice mission great opportunity for people</p>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item d-flex">
+                                            <img src="../Images/volunteer8.png" class="rounded-circle"
+                                                style="height:60px;width:60px" />
+                                            <div class="ms-2">
+                                                <p style="font-size:15px" class="m-0"><strong>Margeret Walsah</strong>
+                                                </p>
+                                                <p style="font-size:10px" class="m-0">Monday, October 211,2019, 4:57 PM
+                                                </p>
+                                                <p>Nice mission great opportunity for people</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Code Ends -->
+
+            </div>
+
+
+            <div class="col-12 col-lg-5 col-xl-5 col-md-12 col-sm-12">
+                <div class="border">
+                    <table class="table p-3">
+                        <thead>
+                            <tr>
+                                <th scope="col">Information</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Skills</td>
+                                <td>Cool, Easy going, Math, Computer</td>
+                            </tr>
+                            <tr>
+                                <td>Days</td>
+                                <td>Weekend only</td>
+                            </tr>
+                            <tr>
+                                <td>Rating</td>
+                                <td>
+                                    <div>
+                                        <img src="../Images/selected-star.png" alt="">
+                                        <img src="../Images/selected-star.png" alt="">
+                                        <img src="../Images/selected-star.png" alt="">
+                                        <img src="../Images/selected-star.png" alt="">
+                                        <img src="../Images/selected-star.png" alt="">
+                                        <span class="text-secondary">(by 125 volunters)</span>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="shadow-sm mt-5 ">
+                    <h4>Recent Volunteers</h4>
+                    <div id="carouselExample" class="carousel slide" data-bs-interval="false" data-ride="carousel"
+                        data-pause="hover">
+
+                        <div class="carousel-inner carContent" style="height:352px">
+
+
+                            <div class="carousel-item active mt-5">
+                                <div class="row">
+                                    <div class="col column2"><img src="../Images/volunteer1.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Andrew Johnson</div>
+                                    <div class="col column2"><img src="../Images/volunteer2.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Charles Vigue</div>
+                                    <div class="col column2"><img src="../Images/volunteer3.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Kathryn Roberts</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col column2"><img src="../Images/volunteer4.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Estella Fowles</div>
+                                    <div class="col column2"><img src="../Images/volunteer5.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Rose Lewis</div>
+                                    <div class="col column2"><img src="../Images/volunteer6.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Raymond Pabon</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col column2"><img src="../Images/volunteer7.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Travis Steen</div>
+                                    <div class="col column2"><img src="../Images/volunteer8.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Sarah Santillan</div>
+                                    <div class="col column2"><img src="../Images/volunteer9.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Linda Richards</div>
+                                </div>
+                                <div class="row volunteerCount">
+                                    <p class="text-secondary text-center">1-9 of 25 recent volunteers</p>
+                                </div>
+
+                            </div>
+
+                            <div class="carousel-item">
+                                <div class="row">
+                                    <div class="col column2"><img src="../Images/volunteer1.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Andrew Johnson</div>
+                                    <div class="col column2"><img src="../Images/volunteer2.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Charles Vigue</div>
+                                    <div class="col column2"><img src="../Images/volunteer3.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Kathryn Roberts</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col column2"><img src="../Images/volunteer4.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Estella Fowles</div>
+                                    <div class="col column2"><img src="../Images/volunteer5.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Rose Lewis</div>
+                                    <div class="col column2"><img src="../Images/volunteer6.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Raymond Pabon</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col column2"><img src="/images/volunteer7.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Travis Steen</div>
+                                    <div class="col column2"><img src="/images/volunteer8.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Sarah Santillan</div>
+                                    <div class="col column2"><img src="/images/volunteer9.png" class="rounded-circle"
+                                            style="height:60px;width:60px" />Linda Richards</div>
+                                </div>
+                                <!-- <div class="row volunteerCount"> -->
+                                    <div class="text-secondary text-center">1-9 of 25 recent volunteers</div>
+                                </div>
+
+                            </div>
+
+
+                           
+
+
+                            <button class="carousel-control-prev carBtn" type="button" data-bs-target="#carouselExample"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <button class="carousel-control-next carBtn" type="button" data-bs-target="#carouselExample"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+            <hr />
+            <div class="text-center ">
+    <h2>Related Missions</h2>
+</div>
+
+<div class="row">
+ <div class="col-12 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="d-inline imgdiv position-relative">
+
+                        <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
+                            class="card-img-top missionimg" alt="...">
+                        <button class="img-btn position-absolute" type="button"><img src="../images/pin.png"
+                                class="d-inline me-1" />
+                            <p class="d-inline">Toronto</p>
+                        </button>
+                        <button class="img-btn-2 position-absolute" type="button"><img src="../images/heart.png"
+                                width="20px" height="20px" /></button>
+                        <button class="img-btn-3 position-absolute" type="button"><img src="../images/eye.png"
+                                width="20px" height="20px" /></button>
+
+                                                    <div class="rule" style="margin-top:-20px !important;">
+                        <hr>
+                        <button class="hrbtn-img">Enviroment</button>
+                        <hr>
+                    </div>
+
+                    </div>
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">Grow Trees-On the path to environment sustainability</h5>
+                        <p class="card-text text-secondary">Some quick example text to build on the card title and make
+                            up
+                            the bulk
+                            of the card's content.</p>
+
+                        <div class="d-flex">
+                            <div class="card-text">Tree Canada</div>
+                            <div class="ms-auto">
+                                <img src="/images/star.png" class="star">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                            </div>
+                        </div>
+                        <div class="rule mt-1">
+                            <hr>
+                            <button class="hrbtn">From 10/01/2019 until 25/02/2019</button>
+                            <hr>
+                        </div>
+
+
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="../Images/Seats-left.png" alt="" class="" height="30px" width="30px">
+                                <div class="d-flex flex-column ms-2">
+                                    <p class="d-inline mb-0 pt-2">10</p>
+                                    <p class="seat">Seats Left</p>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="../Images/deadline.png" height="33px" width="33px" alt="">
+                                <div class="d-flex flex-column ms-2">
+                                    <p class="d-inline mb-0 pt-2">12/03/2023 </p>
+                                    <p class="seat">Deadline</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="text-center">
+                            <a href="#" class="btn cardbtn mx-auto "><span>Apply</span> <img class="ms-1"
+                                    src="/Images/right-arrow.png"></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="d-inline imgdiv position-relative">
+
+                        <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
+                            class="card-img-top  missionimg" alt="...">
+                        <button class="img-btn position-absolute" type="button"><img src="../images/pin.png"
+                                class="d-inline me-1" />
+                            <p class="d-inline">Toronto</p>
+                        </button>
+                        <button class="img-btn-2 position-absolute" type="button"><img src="../images/heart.png"
+                                width="20px" height="20px" /></button>
+                        <button class="img-btn-3 position-absolute" type="button"><img src="../images/eye.png"
+                                width="20px" height="20px" /></button>
+
+                    </div>
+                    <div class="rule" style="margin-top:-20px !important;">
+                        <hr>
+                        <button class="hrbtn-img">Enviroment</button>
+                        <hr>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">Grow Trees-On the path to environment sustainability</h5>
+                        <p class="card-text text-secondary">Some quick example text to build on the card title and make
+                            up
+                            the bulk
+                            of the card's content.</p>
+
+                        <div class="d-flex">
+                            <div class="card-text">Tree Canada</div>
+                            <div class="ms-auto">
+                                <img src="/images/star.png" class="star">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                            </div>
+                        </div>
+                        <div class="rule mt-1">
+                            <hr>
+                            <button class="hrbtn">From 10/01/2019 until 25/02/2019</button>
+                            <hr>
+                        </div>
+
+
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="../Images/Seats-left.png" alt="" class="" height="30px" width="30px">
+                                <div class="d-flex flex-column ms-2">
+                                    <p class="d-inline mb-0 pt-2">10</p>
+                                    <p class="seat">Seats Left</p>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="../Images/deadline.png" height="33px" width="33px" alt="">
+                                <div class="d-flex flex-column ms-2">
+                                    <p class="d-inline mb-0 pt-2">12/03/2023 </p>
+                                    <p class="seat">Deadline</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="text-center">
+                            <a href="#" class="btn cardbtn mx-auto "><span>Apply</span> <img class="ms-1"
+                                    src="/Images/right-arrow.png"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="d-inline imgdiv  position-relative">
+
+                        <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
+                            class="card-img-top  missionimg" alt="...">
+                        <button class="img-btn position-absolute" type="button"><img src="../images/pin.png"
+                                class="d-inline me-1" />
+                            <p class="d-inline">Toronto</p>
+                        </button>
+                        <button class="img-btn-2 position-absolute" type="button"><img src="../images/heart.png"
+                                width="20px" height="20px" /></button>
+                        <button class="img-btn-3 position-absolute" type="button"><img src="../images/eye.png"
+                                width="20px" height="20px" /></button>
+
+                                         <div class="rule" style="margin-top:-20px !important;">
+                        <hr>
+                        <button class="hrbtn-img">Enviroment</button>
+                        <hr>
+                    </div>
+
+                    </div>
+           
+
+                    <div class="card-body">
+                        <h5 class="card-title">Grow Trees-On the path to environment sustainability</h5>
+                        <p class="card-text text-secondary">Some quick example text to build on the card title and make
+                            up
+                            the bulk
+                            of the card's content.</p>
+
+                        <div class="d-flex">
+                            <div class="card-text">Tree Canada</div>
+                            <div class="ms-auto">
+                                <img src="/images/star.png" class="star">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                                <img src="/Images/star-empty.png" class="star" alt="">
+                            </div>
+                        </div>
+                        <div class="rule mt-1">
+                            <hr>
+                            <button class="hrbtn">From 10/01/2019 until 25/02/2019</button>
+                            <hr>
+                        </div>
+
+
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="../Images/Seats-left.png" alt="" class="" height="30px" width="30px">
+                                <div class="d-flex flex-column ms-2">
+                                    <p class="d-inline mb-0 pt-2">10</p>
+                                    <p class="seat">Seats Left</p>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="../Images/deadline.png" height="33px" width="33px" alt="">
+                                <div class="d-flex flex-column ms-2">
+                                    <p class="d-inline mb-0 pt-2">12/03/2023 </p>
+                                    <p class="seat">Deadline</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="text-center">
+                            <a href="#" class="btn cardbtn mx-auto "><span>Apply</span> <img class="ms-1"
+                                    src="/Images/right-arrow.png"></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            </div>
+@*
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+                crossorigin="anonymous"></script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous"></script>*@
+            <script src="/js/volunteering.js"></script>
+
+
+</body>
+
+
+</html>
+
