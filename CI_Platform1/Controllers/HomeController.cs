@@ -1,8 +1,10 @@
 ﻿using CI_Entities1.Data;
 using CI_Entities1.Models;
 using CI_Platform1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -21,6 +23,7 @@ namespace CI_Platform1.Controllers
 
         public IActionResult Login()
         {
+            HttpContext.Session.Clear();
             return View();
         }
 
@@ -39,9 +42,22 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
-        public IActionResult LandingPage()
+        public IActionResult LandingPage(long id)
         {
-            return View();
+            int? userid = HttpContext.Session.GetInt32("userID");
+            if (userid == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+
+            List<Mission> mission = _CiPlatformContext.Missions.ToList();
+            foreach (var item in mission)
+            {
+                var City = _CiPlatformContext.Cities.FirstOrDefault(u => u.CityId == item.CityId);
+                var Theme = _CiPlatformContext.MissionThemes.FirstOrDefault(u => u.MissionThemeId == item.ThemeId);
+            }
+            return View(mission);
         }
 
         public IActionResult nomissionfound()
@@ -67,20 +83,23 @@ namespace CI_Platform1.Controllers
         private readonly CiPlatformContext _CiPlatformContext;
 
         //login method
-        
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            if(ModelState.IsValid)
-{
-                var user=await _CiPlatformContext.Users.Where(u => u.Email == model.Email &&  u.Password== model.Password).FirstOrDefaultAsync();
-                
-                if(user==null)
+            if (ModelState.IsValid)
+            {
+                var user = await _CiPlatformContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
+                var username = model.Email.Split('@')[0];
+                if (user == null)
                 {
                     ViewBag.Error = "Email or Password has not Matched to the registered Credentials";
                 }
                 else
                 {
+                    HttpContext.Session.SetString("userID", username);
+                    HttpContext.Session.SetString("Firstname", user.FirstName);
+
                     return RedirectToAction("LandingPage", "Home");
                 }
             }
@@ -89,7 +108,9 @@ namespace CI_Platform1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Forget(ForgetModel model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Forget(ForgetModel model)
         {
             if (ModelState.IsValid)
             {
