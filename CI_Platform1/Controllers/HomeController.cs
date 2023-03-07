@@ -42,7 +42,7 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
-        public IActionResult LandingPage(long id)
+        public IActionResult LandingPage(long id, string SearchingMission)
         {
             int? userid = HttpContext.Session.GetInt32("userID");
             if (userid == null)
@@ -56,6 +56,19 @@ namespace CI_Platform1.Controllers
             {
                 var City = _CiPlatformContext.Cities.FirstOrDefault(u => u.CityId == item.CityId);
                 var Theme = _CiPlatformContext.MissionThemes.FirstOrDefault(u => u.MissionThemeId == item.ThemeId);
+            }
+            
+
+            //Search Mission
+            if (SearchingMission != null)
+            {
+                mission = _CiPlatformContext.Missions.Where(m => m.Title.Contains(SearchingMission)).ToList();
+                ViewBag.InputSearch = SearchingMission;
+
+                if (mission.Count() == 0)
+                {
+                    return RedirectToAction("NoMissionFound", "Home");
+                }
             }
             return View(mission);
         }
@@ -81,6 +94,8 @@ namespace CI_Platform1.Controllers
         }
 
         private readonly CiPlatformContext _CiPlatformContext;
+
+        public dynamic SearchingMission { get; private set; }
 
         //login method
 
@@ -133,10 +148,10 @@ namespace CI_Platform1.Controllers
                 _CiPlatformContext.SaveChanges();
 
 
-                var resetLink = Url.Action("ResetPassword", "Home", new { email = model.Email, token }, Request.Scheme);
+                var resetLink = Url.Action("Resetpass", "Home", new { email = model.Email, token }, Request.Scheme);
 
 
-                var fromAddress = new MailAddress("tatvahl@gmail.com", "Sender Name");
+                var fromAddress = new MailAddress("officeciplatform@gmail.com", "Sender Name");
                 var toAddress = new MailAddress(model.Email);
                 var subject = "Password reset request";
                 var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
@@ -149,16 +164,67 @@ namespace CI_Platform1.Controllers
                 var smtpClient = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("tatvahl@gmail.com", "dvbexvljnrhcflfw"),
+                    Credentials = new NetworkCredential("officeciplatform@gmail.com", "mhhzcvqiqcaqeggc"),
                     EnableSsl = true
                 };
                 smtpClient.Send(message);
 
-                return RedirectToAction("ForgetPass", "Home");
+                return RedirectToAction("Forget", "Home");
             }
 
             return View();
         }
+
+
+
+        [HttpGet]
+        public IActionResult Resetpass(string email, string token)
+        {
+            var passwordReset = _CiPlatformContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
+            if (passwordReset == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            // Pass the email and token to the view for resetting the password
+            var model = new PasswordReset
+            {
+                Email = email,
+                Token = token
+            };
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult Resetpass(Resetpassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Find the user by email
+                var user = _CiPlatformContext.Users.FirstOrDefault(u => u.Email == model.Email);
+                if (user == null)
+                {
+                    return RedirectToAction("Forget", "User");
+                }
+
+                // Find the password reset record by email and token
+                var passwordReset = _CiPlatformContext.PasswordResets.FirstOrDefault(u => u.Email == model.Email && u.Token == model.Token);
+                if (passwordReset == null)
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+
+                // Update the user's password
+                user.Password = model.Password;
+                _CiPlatformContext.SaveChanges();
+
+            }
+
+            return RedirectToAction("Login", "Home");
+        }
+
+
 
 
 
