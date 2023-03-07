@@ -42,7 +42,7 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
-        public IActionResult LandingPage(long id, string SearchingMission)
+        public IActionResult LandingPage(long id, string SearchingMission, int ? page)
         {
             int? userid = HttpContext.Session.GetInt32("userID");
             if (userid == null)
@@ -70,7 +70,23 @@ namespace CI_Platform1.Controllers
                     return RedirectToAction("NoMissionFound", "Home");
                 }
             }
-            return View(mission);
+
+            //Pagination
+
+            const int pageSize = 5; // Number of items to display per page
+            int pageNumber = (page ?? 1); // Default to the first page
+            var totalItems = _CiPlatformContext.Missions.Count(); // Total number of items
+            var items = _CiPlatformContext.Missions
+            //.OrderByDescending(i => i.CreatedDate)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            ViewBag.TotalItems = totalItems;
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            return View(items);
         }
 
         public IActionResult nomissionfound()
