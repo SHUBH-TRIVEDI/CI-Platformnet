@@ -1,345 +1,288 @@
-﻿<style>
+﻿@*@using CI_Entities1.Models
+    @model List<CI_Entities1.Models.City>
+    @{
+    var mission = (List<City>)ViewData["City"];
+    }*@
+
+@using CI_Entities1.Models
+@model List<CI_Entities1.Models.Mission>
+
+@{
+    var mission = (List<Mission>)ViewData["mission"];
+}
+
+<style>
+
+    /*style="height:140px; width:max-content; overflow-y: auto;*/
+ /*   .scrollable {
+        height: 222px;
+        width: max-content;
+        overflow-y: auto;
+    }*/
+
     .filter-list {
-    / padding:6px 10px; /
-    background-color: white;
-    border: 1px solid #808080;
-    border-radius: 20px;
-    color: #000;
-    cursor: pointer;
-}
+        / padding:6px 10px;
+        / background-color: white;
+        border: 1px solid #808080;
+        border-radius: 20px;
+        color: #000;
+        cursor: pointer;
+    }
 
-.filter-close-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    margin-left: 5px;
-    color: #888;
-}
-
-/*.filters-section11 {
-    margin-top: 2%;
-}*/
-
+    .filter-close-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        margin-left: 5px;
+        -ms-perspective-origin-y888;
+    }
 </style>
 
+
+
 <nav class="navbar navbar-expand-md  FilterBar p-0">
-        <div class="container p-0">
+    <div class="container p-0">
 
-            <form class="d-flex">
-                <input class="form-control" type="search" placeholder="Search mission..." name="SearchingMission" aria-label="Search" style="border:none" id="Search">
-            </form>
+        <form class="d-flex">
+            <input class="form-control" type="search" placeholder="Search mission..." name="SearchingMission" aria-label="Search" style="border:none" id="Search">
+        </form>
 
-            <div class="justify-content-end">
+        <div class="justify-content-end">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <img src="~/images/filter.png" />
             </button>
+        </div>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
 
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
+            <div class="offcanvas-body p-0">
 
-                <div class="offcanvas-body p-0">
+                <ul class="navbar-nav justify-content-end flex-grow-1">
 
-                    <ul class="navbar-nav justify-content-end flex-grow-1">
+                    <li class="nav-item dropdown LiBorder">
+                        <div class="dropdown">
+                            <button class="btn  dropdown-toggle dropdown_btn " type="button" id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                Country &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="height:140px; width:max-content; overflow-y: auto;">
+                                @foreach (var category in ViewBag.listofcountry)
+                                {
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <div class="form-check">
+                                                <input class="form-check-input checkbox" type="checkbox" value="@category.Name" id="Checkme1" />
+                                                <label class="form-check-label" for="Checkme1">@category.Name</label>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </li>
 
-                        <li class="nav-item dropdown LiBorder">
-                            <div class="dropdown">
-                                <button class="btn  dropdown-toggle dropdown_btn " type="button" id="dropdownMenuButton"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    Country &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li class="nav-item dropdown LiBorder">
+                        <div class="dropdown">
+                            <button class="btn  dropdown-toggle dropdown_btn " type="button" id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                City &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
+                                @foreach (var category in ViewBag.listofcity)
+                                {
                                     <li>
                                         <a class="dropdown-item" href="#">
                                             <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="India" id="Checkme1" />
-                                                <label class="form-check-label" for="Checkme1">India</label>
+                                                <input class="form-check-input checkbox" type="checkbox" value="@category.Name" id="Checkme1" />
+                                                <label class="form-check-label" for="Checkme1">@category.Name</label>
                                             </div>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="America" id="Checkme2" />
-                                                <label class="form-check-label" for="Checkme2">America</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Canada" id="Checkme3" />
-                                                <label class="form-check-label" for="Checkme3">Canada</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Japan" id="Checkme4" />
-                                                <label class="form-check-label" for="Checkme4">Japan</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                                }
 
-                        <li class="nav-item dropdown LiBorder">
-                            <div class="dropdown">
-                                <button class="btn  dropdown-toggle dropdown_btn " type="button" id="dropdownMenuButton"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    City &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Ahmedbad" id="Checkme1" />
-                                                <label class="form-check-label" for="Checkme1">Ahmedbad</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Mumbai" id="Checkme2" />
-                                                <label class="form-check-label" for="Checkme2">Mumbai</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Delhi" id="Checkme3" />
-                                                <label class="form-check-label" for="Checkme3">Delhi</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Banglore" id="Checkme4"  />
-                                                <label class="form-check-label" for="Checkme4">Banglore</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                            </ul>
+                        </div>
+                    </li>
 
-                        <li class="nav-item dropdown LiBorder">
-                            <div class="dropdown">
-                                <button class="btn  dropdown-toggle dropdown_btn " type="button" id="dropdownMenuButton"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    Theme &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li class="nav-item dropdown LiBorder">
+                        <div class="dropdown">
+                            <button class="btn  dropdown-toggle dropdown_btn scrol" type="button" id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                Theme &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton"  style="height:140px; width:max-content; overflow-y: auto;">
+                                @foreach (var category in ViewBag.listoftheme)
+                                {
                                     <li>
                                         <a class="dropdown-item" href="#">
                                             <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Forest" id="Checkme1" />
-                                                <label class="form-check-label" for="Checkme1">Forest</label>
+                                                <input class="form-check-input checkbox" type="checkbox" value="@category.Title" id="Checkme1" />
+                                                <label class="form-check-label" for="Checkme1">@category.Title</label>
                                             </div>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Education" id="Checkme2"  />
-                                                <label class="form-check-label" for="Checkme2">Education</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Cleaniness" id="Checkme3" />
-                                                <label class="form-check-label" for="Checkme3">Cleaniness</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Environment" id="Checkme4"  />
-                                                <label class="form-check-label" for="Checkme4">Environment</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                                }
 
-                        <li class="nav-item dropdown LiBorder me-1">
-                            <div class="dropdown">
-                                <button class="btn  dropdown-toggle dropdown_btn " type="button" id="dropdownMenuButton"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    Skills &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Writing" id="Checkme1" />
-                                                <label class="form-check-label" for="Checkme1">Writing</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Listening" id="Checkme2"  />
-                                                <label class="form-check-label" for="Checkme2">Listening</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Speaking" id="Checkme3" />
-                                                <label class="form-check-label" for="Checkme3">Speaking</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <div class="form-check">
-                                                <input class="form-check-input checkbox" type="checkbox" value="Extra" id="Checkme4"  />
-                                                <label class="form-check-label" for="Checkme4">Extra</label>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                            </ul>
+                        </div>
+                    </li>
 
-                    </ul>
+                    <li class="nav-item dropdown LiBorder me-1">
+                        <div class="dropdown">
+                            <button class="btn  dropdown-toggle dropdown_btn " type="button" id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                Skills &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="form-check">
+                                            <input class="form-check-input checkbox" type="checkbox" value="Goal" id="Checkme1" />
+                                            <label class="form-check-label" for="Checkme1">Goal</label>
+                                        </div>
+                                    </a>
+                                </li>
 
-                </div>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="form-check">
+                                            <input class="form-check-input checkbox" type="checkbox" value="Time" id="Checkme1" />
+                                            <label class="form-check-label" for="Checkme1">Time</label>
+                                        </div>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+
             </div>
         </div>
-    </nav>
-
-        <div class="d-flex align-items-center flex-wrap justify-content-center">
-
-        <div class="filters-section11 d-flex align-items-center flex-wrap justify-content-center mt-4">
-        </div>
-        <span class="filter-list  ps-1 pe-1 mt-4 " id="ClearBtn" style="display:none;">Clear All<button class="filter-close-button" id="clearbutton">&times;</button></span>
     </div>
+</nav>
+
+<div class="d-flex align-items-center flex-wrap justify-content-center">
+
+    <div class="filters-section11 d-flex align-items-center flex-wrap justify-content-center mt-4">
+    </div>
+    <span class="filter-list  ps-1 pe-1 mt-4 " id="ClearBtn" style="display:none;">Clear All<button class="filter-close-button" id="clearbutton">&times;</button></span>
+</div>
 
 
 <script>
-    let filtersSection = document.querySelector(".filters-section11");
-var filterList = document.querySelector(".filter-list");
-var cbs = document.querySelectorAll('input[type=checkbox]');
-for (var i = 0; i < cbs.length; i++) {
-    cbs[i].addEventListener('change', function () {
-        if (this.checked) {
-            addElement(this, this.value);
-        }
-        else {
+        let filtersSection = document.querySelector(".filters-section11");
+    var filterList = document.querySelector(".filter-list");
+    var cbs = document.querySelectorAll('input[type=checkbox]');
+    for (var i = 0; i < cbs.length; i++) {
+        cbs[i].addEventListener('change', function () {
+            if (this.checked) {
+                addElement(this, this.value);
+            }
+            else {
 
-            removeElement(this.value);
-            console.log("unchecked");
-        }
-    });
-}
-
-
-clearbutton.onclick = () => {
-    const myNode = document.querySelector(".filters-section11");
-
-    while (myNode.lastElementChild) {
-        myNode.removeChild(myNode.lastElementChild);
-    }
-    for (const checkbox of document.querySelectorAll('input[type=checkbox]')) {
-        //iterating over all matched elements
-
-
-        checkbox.checked = false //for unselection
-        document.getElementById("ClearBtn").style.display = "none";
+                removeElement(this.value);
+                console.log("unchecked");
+            }
+        });
     }
 
-}
+
+    clearbutton.onclick = () => {
+        const myNode = document.querySelector(".filters-section11");
+
+        while (myNode.lastElementChild) {
+            myNode.removeChild(myNode.lastElementChild);
+        }
+        for (const checkbox of document.querySelectorAll('input[type=checkbox]')) {
+            //iterating over all matched elements
 
 
-function addElement(current, value) {
-    let filtersSection = document.querySelector(".filters-section11");
-    let clearAllButton = document.getElementById("ClearBtn");
-    let createdTag = document.createElement('span');
-    createdTag.classList.add('filter-list');
-    createdTag.classList.add('ps-3');
-    createdTag.classList.add('pe-1');
-    createdTag.classList.add('me-2');
-    createdTag.innerHTML = value;
+            checkbox.checked = false //for unselection
+            document.getElementById("ClearBtn").style.display = "none";
+        }
 
-    createdTag.setAttribute('id', value);
-    let crossButton = document.createElement('button');
-    crossButton.classList.add("filter-close-button");
-    let cross = '&times;'
+    }
 
 
-    crossButton.addEventListener('click', function () {
+    function addElement(current, value) {
+        let filtersSection = document.querySelector(".filters-section11");
+        let clearAllButton = document.getElementById("ClearBtn");
+        let createdTag = document.createElement('span');
+        createdTag.classList.add('filter-list');
+        createdTag.classList.add('ps-3');
+        createdTag.classList.add('pe-1');
+        createdTag.classList.add('me-2');
+        createdTag.innerHTML = value;
+
+        createdTag.setAttribute('id', value);
+        let crossButton = document.createElement('button');
+        crossButton.classList.add("filter-close-button");
+        let cross = '&times;'
+
+
+        crossButton.addEventListener('click', function () {
+            let elementToBeRemoved = document.getElementById(value);
+
+            console.log(elementToBeRemoved);
+            console.log(current);
+            elementToBeRemoved.remove();
+
+            current.checked = false;
+
+
+
+
+        })
+
+        crossButton.innerHTML = cross;
+
+
+        // let crossButton = '&times;'
+
+        createdTag.appendChild(crossButton);
+        filtersSection.appendChild(createdTag);
+
+        if (filtersSection.hasChildNodes()) {
+
+            document.getElementById("ClearBtn").style.display = "block";
+        } else {
+            document.getElementById("ClearBtn").style.display = "none";
+        }
+
+    }
+    function ClearAllElement() {
+
+        var filtersSection = document.querySelector(".filters-section11");
+
+        for (var i = 0; i < filtersSection.length; i++) {
+            filtersSection.pop();
+        }
+
+    }
+
+
+    function removeElement(value) {
+
+        let filtersSection = document.querySelector(".filters-section11");
+        let clearAllButton = document.getElementById("ClearBtn");
         let elementToBeRemoved = document.getElementById(value);
+        document.getElementById(value).checked = false;
+        filtersSection.removeChild(elementToBeRemoved);
+        if (filtersSection.hasChildNodes()) {
+            alert("remove");
+            document.getElementById("ClearBtn").style.display = "block";
+        } else {
+            document.getElementById("ClearBtn").style.display = "none";
+        }
 
-        console.log(elementToBeRemoved);
-        console.log(current);
-        elementToBeRemoved.remove();
-
-        current.checked = false;
-
-
-
-
-    })
-
-    crossButton.innerHTML = cross;
-
-
-    // let crossButton = '&times;'
-
-    createdTag.appendChild(crossButton);
-    filtersSection.appendChild(createdTag);
-
-    if (filtersSection.hasChildNodes()) {
-
-        document.getElementById("ClearBtn").style.display = "block";
-    } else {
-        document.getElementById("ClearBtn").style.display = "none";
     }
-
-}
-function ClearAllElement() {
-
-    var filtersSection = document.querySelector(".filters-section11");
-
-    for (var i = 0; i < filtersSection.length; i++) {
-        filtersSection.pop();
-    }
-
-}
-
-
-function removeElement(value) {
-
-    let filtersSection = document.querySelector(".filters-section11");
-    let clearAllButton = document.getElementById("ClearBtn");
-    let elementToBeRemoved = document.getElementById(value);
-    document.getElementById(value).checked = false;
-    filtersSection.removeChild(elementToBeRemoved);
-    if (filtersSection.hasChildNodes()) {
-        alert("remove");
-        document.getElementById("ClearBtn").style.display = "block";
-    } else {
-        document.getElementById("ClearBtn").style.display = "none";
-    }
-
-}
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    

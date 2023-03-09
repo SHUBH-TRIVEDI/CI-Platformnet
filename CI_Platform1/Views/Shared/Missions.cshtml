@@ -1,7 +1,52 @@
-﻿@model List<CI_Entities1.Models.Mission>
+﻿@using CI_Entities1.Models
+@model List<CI_Entities1.Models.Mission>
 
+@{
+    var mission = (List<Mission>)ViewData["mission"];
+}
 <html>
 <style>
+    /*card*/
+    .card-img {
+        position: relative;
+    }
+
+    .pin {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.514);
+        border-radius: 50px;
+        top: 15px;
+        right: 10px;
+    }
+
+    .heart {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.514);
+        border-radius: 50%;
+        top: 100px;
+        right: 12px;
+    }
+
+    .share {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.514);
+        border-radius: 50%;
+        top: 150px;
+        right: 12px;
+    }
+
+    .env {
+        position: absolute;
+        color: #7d7d7d;
+        background-color: white;
+        border-radius: 40px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        width: fit-content;
+        bottom: -16px;
+    }
+    /*card*/
 
     .sort {
         width: 11rem;
@@ -39,7 +84,6 @@
                 padding-right: 0;
                 background: url("path/to/arrow-right.png") no-repeat center right;
             }
-
 </style>
 
 
@@ -54,14 +98,27 @@
 
 
             <div class="col-6 col-md-8 col-sm-8 d-flex mt-3 sortby mb-3">
-                <div class="sort">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Sort by</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                <div class="dropdown sort me-2 mt-1">
+                    <button class=" btn dropdown d-flex " type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        <span class="sortby me-5 "> Sort By</span>
+                        <img src="/Image/drop-down.png" alt="" class="sortaerrow">
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-action="LandingPage" asp-controller="Home" asp-route-Order="1">Title</a></li>
+                        <li><a class="dropdown-item" asp-action="LandingPage" asp-controller="Home" asp-route-Order="2">Start Date</a></li>
+                        <li><a class="dropdown-item" asp-action="LandingPage" asp-controller="Home" asp-route-Order="3">End Date</a></li>
+                    </ul>
                 </div>
+                @*<div class="sort">
+                    <select class="form-select" aria-label="Default select example">
+                    <option><a asp-action="LandingPage" asp-controller="Home" asp-route-Order="1">Title</a></option>
+                    <option><a asp-action="LandingPage" asp-controller="Home" asp-route-Order="2">Start Date</a></option>
+                    <option><a asp-action="LandingPage" asp-controller="Home" asp-route-Order="3">End Date</a></option>
+                    </select>
+                    </div>*@
+
+
                 <div class="ms-5 ">
 
                     <a class="btn-grid" href="">
@@ -80,38 +137,62 @@
 
     </div>
 
-    @*------------------------------------------------CARDS-------------------------------------------------*@
+    @*------------------------------------------------CARD-------------------------------------------------*@
     <div class="container grid-container">
         <div class="row">
-            @foreach (var category in Model)
+            @foreach (var category in mission)
             {
                 <div class="col-12 col-md-6 col-lg-4">
 
                     <div class="card">
-                        <div class="d-inline imgdiv position-relative">
 
-                            <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
-                             class="card-img-top missionimg" alt="...">
-                            <button class="img-btn position-absolute " type="button">
-                                <img src="../images/pin.png"
-                                 class="d-inline me-1" />
-                                <p class="d-inline">@category.City.Name</p>
-                            </button>
-                            <button class="img-btn-2 position-absolute" type="button">
-                                <img src="../images/heart.png"
-                                 width="20px" height="20px" />
-                            </button>
-                            <button class="img-btn-3 position-absolute" type="button">
-                                <img src="../images/eye.png"
-                                 width="20px" height="20px" />
-                            </button>
-                            <div class="rule" style="margin-top:-20px !important;">
-                                <hr>
-                                <button class="hrbtn-img">@category.Theme.Title</button>
-                                <hr>
+
+                        <div class="card-img ">
+                            <img class="card-img-top h-100 " src="~/Images/Grow-Trees-On-the-path-to-environment-sustainability.png" alt="Card image cap" />
+
+                            <div class="pin d-flex align-items-center px-2 py-1 ">
+                                <img src="~/Images/pin.png" alt="location">
+                                <p class="text-white mb-0 px-2">@category.City.Name</p>
                             </div>
 
+                            <div class="heart align-items-center px-2 py-1">
+                                <img src="~/Images/heart.png" alt="">
+                            </div>
+
+                            <div class="share align-items-center px-2 py-1">
+                                <img src="~/Images/user.png" alt="">
+                            </div>
+
+                            <div class="env align-items-center px-2 py-1 ">
+                                <p class="mb-0 info-txt-2">@category.Theme.Title</p>
+                            </div>
                         </div>
+                        @*<div class="d-inline imgdiv position-relative">
+
+                            <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
+                            class="card-img-top missionimg" alt="...">
+                            <button class="img-btn position-absolute " type="button">
+                            <img src="../images/pin.png"
+                            class="d-inline me-1" />
+                            <p class="d-inline">@category.City.Name</p>
+                            </button>
+                            <button class="img-btn-2 position-absolute" type="button">
+                            <img src="../images/heart.png"
+                            width="20px" height="20px" />
+                            </button>
+                            <button class="img-btn-3 position-absolute" type="button">
+                            <img src="../images/eye.png"
+                            width="20px" height="20px" />
+                            </button>
+                            <div class="rule" style="margin-top:-20px !important;">
+                            <hr>
+                            <button class="hrbtn-img">@category.Theme.Title</button>
+                            <hr>
+                            </div>
+
+                            </div>*@
+
+
 
 
                         <div class="card-body">

@@ -42,22 +42,50 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
-        public IActionResult LandingPage(long id, string SearchingMission, int ? page)
+        public IActionResult LandingPage(long id, string SearchingMission, int ? page, int Order)
         {
+            var mission = _CiPlatformContext.Missions.ToList();
+
+
+            ////for printing the values inside the cards...............................
+            List<City> cities = _CiPlatformContext.Cities.ToList();
+            ViewBag.listofcity = cities;
+
+            List<Country> countries  = _CiPlatformContext.Countries.ToList();
+            ViewBag.listofcountry = countries;
+
+            List<MissionTheme> themes = _CiPlatformContext.MissionThemes.ToList();
+            ViewBag.listoftheme = themes;
+
+            //User Admin Name
             int? userid = HttpContext.Session.GetInt32("userID");
             if (userid == null)
             {
                 return RedirectToAction("Login", "Home");
             }
 
+            //sorting method
 
-            List<Mission> mission = _CiPlatformContext.Missions.ToList();
-            foreach (var item in mission)
+            //var students = from s in _CiPlatformContext.Missions
+            //               select s;
+            switch (Order)
             {
-                var City = _CiPlatformContext.Cities.FirstOrDefault(u => u.CityId == item.CityId);
-                var Theme = _CiPlatformContext.MissionThemes.FirstOrDefault(u => u.MissionThemeId == item.ThemeId);
-            }
-            
+                case 1:
+                    mission = _CiPlatformContext.Missions.OrderBy(e=>e.Title).ToList();
+                    break;
+                case 2:
+                    mission = _CiPlatformContext.Missions.OrderByDescending(e => e.StartDate).ToList();
+                    break;
+                case 3:
+                    mission = _CiPlatformContext.Missions.OrderBy(e => e.EndDate).ToList();
+                    break;
+                default:
+                    mission = _CiPlatformContext.Missions.OrderBy(e => e.Theme).ToList();
+                    break;
+
+                   // return View(mission.ToList());
+            }        
+
 
             //Search Mission
             if (SearchingMission != null)
@@ -72,12 +100,12 @@ namespace CI_Platform1.Controllers
             }
 
             //Pagination
-
-            const int pageSize = 5; // Number of items to display per page
+            const int pageSize = 6; // Number of items to display per page
             int pageNumber = (page ?? 1); // Default to the first page
             var totalItems = _CiPlatformContext.Missions.Count(); // Total number of items
-            var items = _CiPlatformContext.Missions
-            //.OrderByDescending(i => i.CreatedDate)
+            //var items = _CiPlatformContext.Missions
+            //.OrderByDescending(i => i.start_date)
+            var items = mission
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
@@ -86,7 +114,13 @@ namespace CI_Platform1.Controllers
             ViewBag.PageNumber = pageNumber;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-            return View(items);
+            ViewData["mission"] = items.ToList();
+            return View();
+        }
+
+        private void ToList()
+        {
+            throw new NotImplementedException();
         }
 
         public IActionResult nomissionfound()
