@@ -99,12 +99,11 @@ namespace CI_Platform1.Controllers
                 }
             }
 
-            //Pagination
-            const int pageSize = 6; // Number of items to display per page
+            //Pagination  const
+            int pageSize = 6; // Number of items to display per page
             int pageNumber = (page ?? 1); // Default to the first page
             var totalItems = _CiPlatformContext.Missions.Count(); // Total number of items
             //var items = _CiPlatformContext.Missions
-            //.OrderByDescending(i => i.start_date)
             var items = mission
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
