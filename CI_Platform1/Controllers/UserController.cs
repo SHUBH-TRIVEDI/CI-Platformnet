@@ -14,7 +14,7 @@ namespace CI_Platform1.Controllers
             _CiPlatformContext = CiPlatformContext;
         }
 
-
+         
         public IActionResult Registration()
         {
            // User user = new User();

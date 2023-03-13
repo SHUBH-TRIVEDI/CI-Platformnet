@@ -1,9 +1,9 @@
 ﻿@using CI_Entities1.Models
 @model List<CI_Entities1.Models.Mission>
 
-@{
+@*@{
     var mission = (List<Mission>)ViewData["mission"];
-}
+}*@
 <html>
 <style>
     /*card*/
@@ -92,16 +92,16 @@
         <div class="explore-now row me-5">
             <div class="col-6 col-md-4 col-sm-4 d-inline">
                 <p class="fs-4 ms-5 mt-2">
-                    Explore <strong class="fs-3">@ViewBag.TotalItems missions</strong>
+                    Explore <strong class="fs-3">@ViewBag.TotalMission missions</strong>
                 </p>
             </div>
 
 
             <div class="col-6 col-md-8 col-sm-8 d-flex mt-3 sortby mb-3">
-                <div class="dropdown sort me-2 mt-1">
+                <div class="dropdown sort nav-item">
                     <button class=" btn dropdown d-flex " type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                        <span class="sortby me-5 "> Sort By</span>
+                        <span class="sortby me-5 border p-2"> Sort By &nbsp;&nbsp;<img src="~/images/drop-down.png" /> </span>
                         <img src="/Image/drop-down.png" alt="" class="sortaerrow">
                     </button>
                     <ul class="dropdown-menu">
@@ -123,7 +123,7 @@
 
                 <div class="ms-5 ">
 
-                    <a class="btn-grid" href="">
+                    <a class="btn-grid " href="">
                         <img src="~/images/grid.png" />
                         @*<i class="bi bi-grid-1x2-fill"></i>*@
                     </a>
@@ -142,7 +142,7 @@
     @*------------------------------------------------CARD-------------------------------------------------*@
     <div class="container grid-container">
         <div class="row">
-            @foreach (var category in mission)
+            @foreach (var category in Model)
             {
                 <div class="col-12 col-md-6 col-lg-4">
 
@@ -169,33 +169,6 @@
                                 <p class="mb-0 info-txt-2">@category.Theme.Title</p>
                             </div>
                         </div>
-                        @*<div class="d-inline imgdiv position-relative">
-
-                            <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
-                            class="card-img-top missionimg" alt="...">
-                            <button class="img-btn position-absolute " type="button">
-                            <img src="../images/pin.png"
-                            class="d-inline me-1" />
-                            <p class="d-inline">@category.City.Name</p>
-                            </button>
-                            <button class="img-btn-2 position-absolute" type="button">
-                            <img src="../images/heart.png"
-                            width="20px" height="20px" />
-                            </button>
-                            <button class="img-btn-3 position-absolute" type="button">
-                            <img src="../images/eye.png"
-                            width="20px" height="20px" />
-                            </button>
-                            <div class="rule" style="margin-top:-20px !important;">
-                            <hr>
-                            <button class="hrbtn-img">@category.Theme.Title</button>
-                            <hr>
-                            </div>
-
-                            </div>*@
-
-
-
 
                         <div class="card-body">
                             <h5 class="card-title" style="overflow: hidden; display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;">
@@ -264,7 +237,7 @@
                             </div>
 
                             <div class="text-center">
-                                <a asp-controller="Home" asp-action="volunteering" class="btn cardbtn mx-auto ">
+                                <a href="/Home/volunteering?id=@category.MissionId" class="btn cardbtn mx-auto ">
                                     <span>Story listing</span> <img class="ms-1"
                                                                 src="/Images/right-arrow.png">
                                 </a>
@@ -282,29 +255,71 @@
         @*Pagination*@
 
 
-        <div class="pager">
+        @*  <div class="pager">
             @if (ViewBag.PageNumber > 1)
             {
-                <a href="@Url.Action("LandingPage", new { page = ViewBag.PageNumber - 1 })">&lt; Previous</a>
+            <a href="@Url.Action("LandingPage", new { page = ViewBag.PageNumber - 1 })">&lt; Previous</a>
             }
 
             @for (int i = 1; i <= ViewBag.TotalPages; i++)
             {
-                if (i == ViewBag.PageNumber)
-                {
-                    <span>@i</span>
-                }
-                else
-                {
-                    <a href="@Url.Action("LandingPage", new { page = i })">@i</a>
-                }
+            if (i == ViewBag.PageNumber)
+            {
+            <span>@i</span>
+            }
+            else
+            {
+            <a href="@Url.Action("LandingPage", new { page = i })">@i</a>
+            }
             }
 
             @if (ViewBag.PageNumber < ViewBag.TotalPages)
             {
-                <a href="@Url.Action("LandingPage", new { page = ViewBag.PageNumber + 1 })">Next &gt;</a>
+            <a href="@Url.Action("LandingPage", new { page = ViewBag.PageNumber + 1 })">Next &gt;</a>
             }
-        </div>
+            </div>*@
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+            <ul class="pagination">
+                @if (@ViewBag.currentUrl.Contains('?'))
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == 0 ? "disabled" : "")">
+                        <a class="page-link" href="@ViewBag.currentUrl&pageIndex=@(ViewBag.CurrentPage - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = 0; i < ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@ViewBag.currentUrl&pageIndex=@i">@((i + 1).ToString())</a>
+                        </li>
+                    }
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages - 1 ? "disabled" : "")">
+                        <a class="page-link" href="@ViewBag.currentUrl&pageIndex=@(ViewBag.CurrentPage + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == 0 ? "disabled" : "")">
+                        <a class="page-link" href="@ViewBag.currentUrl?pageIndex=@(ViewBag.CurrentPage - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = 0; i < ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@ViewBag.currentUrl?pageIndex=@i">@((i + 1).ToString())</a>
+                        </li>
+                    }
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages - 1 ? "disabled" : "")">
+                        <a class="page-link" href="@ViewBag.currentUrl?pageIndex=@(ViewBag.CurrentPage + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
     </div>
 
     @*
