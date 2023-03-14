@@ -1,10 +1,4 @@
-﻿@*@using CI_Entities1.Models
-    @model List<CI_Entities1.Models.City>
-    @{
-    var mission = (List<City>)ViewData["City"];
-    }*@
-
-@using CI_Entities1.Models
+﻿@using CI_Entities1.Models
 @model List<CI_Entities1.Models.Mission>
 
 @{
@@ -12,14 +6,6 @@
 }
 
 <style>
-
-    /*style="height:140px; width:max-content; overflow-y: auto;*/
-    /*   .scrollable {
-                    height: 222px;
-                    width: max-content;
-                    overflow-y: auto;
-                }*/
-
     .filter-list {
         / padding:6px 10px;
         / background-color: white;
@@ -105,8 +91,8 @@
                                         <li>
                                             <a class="dropdown-item" href="#">
                                                 <div class="form-check">
-                                                    <input class="form-check-input checkbox" onchange="updateUrlForCities()" name="city" type="checkbox" value="@category.Name" id="Checkme1" />
-                                                    <label class="form-check-label" >@category.Name</label>
+                                                    <input class="form-check-input checkbox" onchange="updateUrlForCity()" name="city" type="checkbox" value="@category.Name" id=@category.CityId />
+                                                    <label class="form-check-label">@category.Name</label>
                                                 </div>
                                             </a>
                                         </li>
@@ -130,7 +116,8 @@
                                         <li>
                                             <a class="dropdown-item" href="#">
                                                 <div class="form-check">
-                                                    <input class="form-check-input checkbox" type="checkbox" value="@category.Title" id="Checkme1" />
+                                                    <input class="form-check-input checkbox" type="checkbox" value="@category.Title" 
+                                                    onchange="updateUrlForTheme()" name="theme" id=@category.MissionThemeId />
                                                     <label class="form-check-label" for="Checkme1">@category.Title</label>
                                                 </div>
                                             </a>
@@ -183,11 +170,8 @@
     {
         <div class="filter ms-2 ps-2" id="co">
             <span class="ps-1">@country.Name</span><button type="button" class="btn-close me-2" aria-label="Close" onclick="countryBtn(this.id)" id=@country.CountryId></button>
-
         </div>
     }
-
-
 }
 
 @if (@ViewBag.city != null)
@@ -196,47 +180,48 @@
     {
         <div class="filter ms-2 ps-2" id="ci">
             @city.Name<button type="button" class="btn-close me-2" aria-label="Close" onclick="cityBtn(this.id)" id=@city.CityId></button>
-
         </div>
     }
 }
 
+@if (@ViewBag.theme != null)
+{
+    @foreach (var theme in @ViewBag.theme)
+    {
+        <div class="filter ms-2 ps-2" id="ci">
+            @theme.Title<button type="button" class="btn-close me-2" aria-label="Close" onclick="themeBtn(this.id)" id=@theme.MissionThemeId></button>
+        </div>
+    }
+}
 
 <script>
                function updateUrlForCountry() {
                     const country = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(el => el.id);
                     let url = window.location.href;
                     let separator = url.indexOf('?') !== -1 ? '&' : '?';
-                    //if (url.includes('ACountries=')) {
-                    //    url = url.replace(/ACountries=([^&]*)/, 'ACountries=' + country);
-                    //}
-                    //else {
-                        url += separator + 'ACountries=' + country;
-                    //}
+                    url += separator + 'ACountries=' + country;
                     window.location.href = url;
-
-
                 }
 
-                function updateUrlForCities() {
-                    alert("hii");
-                const city = Array.from(document.querySelectorAll('input[name="city"]:checked')).map(el => el.id);
-                let url = window.location.href;
-                let separator = url.indexOf('?') !== -1 ? '&' : '?';
-                //if (url.includes('ACities=')) {
-                //    url = url.replace(/ACities=([^&]*)/, 'ACities=' + city);
-                //}
-                //else {
+                function updateUrlForCity() {
+                    const city = Array.from(document.querySelectorAll('input[name="city"]:checked')).map(el => el.id);
+                    let url = window.location.href;
+                    let separator = url.indexOf('?') !== -1 ? '&' : '?';
                     url += separator + 'ACities=' + city;
-                //} 
-                alert("hello")
-                window.location.href = url;
+                    window.location.href = url;
+                }
 
-
-            }
-
-
-                function countryBtn(id){
+                 function updateUrlForTheme() {
+                    const theme = Array.from(document.querySelectorAll('input[name="theme"]:checked')).map(el => el.id);
+                    let url = window.location.href;
+                    let separator = url.indexOf('?') !== -1 ? '&' : '?';
+                    url += separator + 'Atheme=' + theme;
+                    window.location.href = url;
+                }
+         
+        //Country Function
+        function countryBtn(id)
+        { 
         let url = window.location.href;
         const urlParts = url.split('?');
 
@@ -263,10 +248,11 @@
 
         window.location.href = url;
         }
-
         }
 
-        function cityBtn(id){
+        //city function
+
+    function cityBtn(id){
 
     let url = window.location.href;
     const urlParts = url.split('?');
@@ -283,6 +269,39 @@
     countries.forEach(country => params.append('ACities', country));
     } else {
     params.delete('ACities');
+    }
+
+    const updatedParams = params.toString();
+    if (updatedParams) {
+    url = `${baseUrl}?${updatedParams}`;
+    } else {
+    url = baseUrl;
+    }
+
+    window.location.href = url;
+    }
+    }
+
+         //Theme function
+
+    function themeBtn(id){
+
+    let url = window.location.href;
+    const urlParts = url.split('?');
+
+    if (urlParts.length >= 2) 
+    {
+    const baseUrl = urlParts.shift();
+    const queryString = urlParts.join('?');
+    const params = new URLSearchParams(queryString);
+
+    const themes = params.getAll('Atheme').filter(th => th !== id);
+
+    if (themes.length > 0) {
+    params.delete('Atheme');
+    themes.forEach(theme => params.append('Atheme', theme));
+    } else {
+    params.delete('Atheme');
     }
 
     const updatedParams = params.toString();

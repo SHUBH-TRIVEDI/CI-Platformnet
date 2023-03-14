@@ -1,4 +1,5 @@
-﻿using CI_Entities1.Data;
+﻿using CI.Models;
+using CI_Entities1.Data;
 using CI_Entities1.Models;
 using CI_Platform1.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ namespace CI_Platform1.Controllers
 {
     public class HomeController : Controller
     {
-        int i = 0, i1 = 0, j=0, j1=0;
+        int i = 0, i1 = 0, j = 0, j1 = 0, k=0, k1=0;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger, CiPlatformContext CiPlatformContext)
@@ -44,19 +45,19 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
-        public IActionResult LandingPage(long id, string SearchingMission, int ? pageIndex, int Order, long[] ACountries, long[] ACities)
+        public IActionResult LandingPage(long id, string SearchingMission, int? pageIndex, int Order, long[] ACountries, long[] ACities, long[] Atheme)
         {
-            var mission = _CiPlatformContext.Missions.ToList();
-            var newmission = _CiPlatformContext.Missions.ToList();
-            var finalmission = _CiPlatformContext.Missions.ToList();
-           // ViewData["country"] = _CiPlatformContext.Cities.ToList();
+            List<Mission> mission = _CiPlatformContext.Missions.ToList();
+            List<Mission> finalmission = _CiPlatformContext.Missions.ToList();
+            List<Mission> newmission = _CiPlatformContext.Missions.ToList();
+            List<GoalMission> goalMissions = _CiPlatformContext.GoalMissions.ToList();
+            ViewBag.Goal1 = goalMissions;
 
-
-            ////for printing the values inside the cards...............................
+            //for printing the values inside the cards...............................
             List<City> Cities = _CiPlatformContext.Cities.ToList();
             ViewBag.listofcity = Cities;
 
-            List<Country> countries  = _CiPlatformContext.Countries.ToList();
+            List<Country> countries = _CiPlatformContext.Countries.ToList();
             ViewBag.listofcountry = countries;
 
             List<MissionTheme> themes = _CiPlatformContext.MissionThemes.ToList();
@@ -69,16 +70,15 @@ namespace CI_Platform1.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            //country filter
+            //Country filter
             if (ACountries != null && ACountries.Length > 0)
             {
 
                 foreach (var country in ACountries)
                 {
-                    //mission = mission.Where(m => m.CountryId == country).ToList();
                     if (i == 0)
                     {
-                        mission = mission.Where(m => m.CountryId == country + 500).ToList();
+                        mission = mission.Where(m => m.CountryId == country + 700).ToList();
                         i++;
                     }
 
@@ -98,26 +98,20 @@ namespace CI_Platform1.Controllers
                         var countryElement = _CiPlatformContext.Countries.Where(m => m.CountryId == country).ToList();
                         if (i1 == 0)
                         {
-                            countries = _CiPlatformContext.Countries.Where(m => m.CountryId == country + 50000).ToList();
+                            countries = _CiPlatformContext.Countries.Where(m => m.CountryId == country + 60000).ToList();
                             i1++;
                         }
                         countries.AddRange(countryElement);
-                        //var c1 = _CIDbContext.Countries.FirstOrDefault(m => m.CountryId == country);
-                        //ViewBag.country = c1.Name;
                     }
                 }
                 ViewBag.country = countries;
-                //Countries = _CIDbContext.Countries.ToList();
-
-
             }
 
-            //city filter
+            //City Filter
             if (ACities != null && ACities.Length > 0)
             {
                 foreach (var city in ACities)
                 {
-                    //mission = mission.Where(m => m.CityId == city).ToList();
                     if (j == 0)
                     {
                         mission = mission.Where(m => m.CityId == city + 500).ToList();
@@ -141,8 +135,7 @@ namespace CI_Platform1.Controllers
                             j1++;
                         }
                         Cities.AddRange(city1);
-                        //var c1 = _CIDbContext.Cities.FirstOrDefault(m => m.CityId == city);
-                        //ViewBag.city = c1.Name;
+                  
                     }
                 }
                 ViewBag.city = Cities;
@@ -151,10 +144,48 @@ namespace CI_Platform1.Controllers
 
             }
 
+            //Theme Filter
+            if (Atheme != null && Atheme.Length > 0)
+            {
+
+                foreach (var theme in Atheme)
+                {
+                    if (k == 0)
+                    {
+                        mission = mission.Where(m => m.ThemeId == theme + 700).ToList();
+                        k++;
+                    }
+
+                    finalmission = newmission.Where(m => m.ThemeId == theme).ToList();
+
+                    mission.AddRange(finalmission);
+                    if (mission.Count() == 0)
+                    {
+                        return RedirectToAction("NoMissionFound", "Home");
+                    }
+
+                    //------------------------------------for Button------------------------------ -
+
+                    ViewBag.themeid = theme;
+                    if (ViewBag.themeid != null)
+                    {
+                        var themeElement = _CiPlatformContext.MissionThemes.Where(m => m.MissionThemeId == theme).ToList();
+                        if (k1 == 0)
+                        {
+                            themes = _CiPlatformContext.MissionThemes.Where(m => m.MissionThemeId == theme + 60000).ToList();
+                            k1++;
+                        }
+                        themes.AddRange(themeElement);
+                    }
+                }
+                ViewBag.theme = themes;
+            }
+
+            //Order By
             //switch (Order)
             //{
             //    case 1:
-            //        mission = _CiPlatformContext.Missions.OrderBy(e=>e.Title).ToList();
+            //        mission = _CiPlatformContext.Missions.OrderBy(e => e.Title).ToList();
             //        break;
             //    case 2:
             //        mission = _CiPlatformContext.Missions.OrderByDescending(e => e.StartDate).ToList();
@@ -166,8 +197,7 @@ namespace CI_Platform1.Controllers
             //        mission = _CiPlatformContext.Missions.OrderBy(e => e.Theme).ToList();
             //        break;
 
-            //       // return View(mission.ToList());
-            //}        
+            //}
 
 
             //Search Mission
@@ -182,22 +212,8 @@ namespace CI_Platform1.Controllers
                 }
             }
 
-            //Pagination  const
-            //int pageSize = 6; // Number of items to display per page
-            //int pageNumber = (page ?? 1); // Default to the first page
-            //var totalItems = _CiPlatformContext.Missions.Count(); // Total number of items
-            ////var items = _CiPlatformContext.Missions
-            //var items = mission
-            //.Skip((pageNumber - 1) * pageSize)
-            //.Take(pageSize)
-            //.ToList();
-
-            //ViewBag.TotalItems = totalItems;
-            //ViewBag.PageNumber = pageNumber;
-            //ViewBag.PageSize = pageSize;
-            //ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-            //ViewData["mission"] = items.ToList();
-            int pageSize = 3;
+            //Pagination
+            int pageSize = 6;
             int skip = (pageIndex ?? 0) * pageSize;
             var Missions = mission.Skip(skip).Take(pageSize).ToList();
             int totalMissions = mission.Count();
@@ -218,15 +234,9 @@ namespace CI_Platform1.Controllers
             var query = HttpUtility.ParseQueryString(Request.QueryString.ToString());
             query.Remove("pageIndex");
             uriBuilder.Query = query.ToString();
-
-
-
             ViewBag.currentUrl = uriBuilder.ToString();
 
-
-
             return View(Missions);
-            
         }
 
         private void ToList()
@@ -249,22 +259,7 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
-        public IActionResult volunteering(int id)
-        {
-            var mission1 = _CiPlatformContext.Missions.FirstOrDefault(m => m.MissionId == id);
-            ViewBag.mission1= mission1;
-
-            var city = _CiPlatformContext.Cities.FirstOrDefault(m => m.CityId == mission1.CityId);
-            ViewBag.city = city;
-
-            //List<MissionTheme> themes = _CiPlatformContext.MissionThemes.ToList();
-            //ViewBag.listoftheme = themes;
-
-            var Theme = _CiPlatformContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == mission1.ThemeId);
-            ViewBag.Theme = Theme;
-
-            return View();
-        }
+       
 
 
         private readonly CiPlatformContext _CiPlatformContext;
@@ -272,7 +267,6 @@ namespace CI_Platform1.Controllers
         public dynamic SearchingMission { get; private set; }
 
         //login method
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
@@ -296,6 +290,9 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
+
+
+        //Forget Password Model
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -325,7 +322,7 @@ namespace CI_Platform1.Controllers
                 var resetLink = Url.Action("Resetpass", "Home", new { email = model.Email, token }, Request.Scheme);
 
 
-                var fromAddress = new MailAddress("officeciplatform@gmail.com", "Sender Name");
+                var fromAddress = new MailAddress("officehl1882@gmail.com", "Sender Name");
                 var toAddress = new MailAddress(model.Email);
                 var subject = "Password reset request";
                 var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
@@ -338,10 +335,10 @@ namespace CI_Platform1.Controllers
                 var smtpClient = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("officeciplatform@gmail.com", "mhhzcvqiqcaqeggc"),
+                    Credentials = new NetworkCredential("officehl1882@gmail.com", "yedkuuhuklkqfzwx"),
                     EnableSsl = true
                 };
-                smtpClient.Send(message);
+                smtpClient.Send(message); 
 
                 return RedirectToAction("Forget", "Home");
             }
@@ -350,7 +347,7 @@ namespace CI_Platform1.Controllers
         }
 
 
-
+        //Reset Password
         [HttpGet]
         public IActionResult Resetpass(string email, string token)
         {
@@ -396,6 +393,74 @@ namespace CI_Platform1.Controllers
             }
 
             return RedirectToAction("Login", "Home");
+        }
+
+
+
+
+        //Volunteering Missions Model
+        public IActionResult volunteering(int missionid)
+        {
+
+            List<VolunteeringVM> relatedlist = new List<VolunteeringVM>();
+
+            var volmission = _CiPlatformContext.Missions.FirstOrDefault(m => m.MissionId == missionid);
+            var theme = _CiPlatformContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == volmission.ThemeId);
+            var City = _CiPlatformContext.Cities.FirstOrDefault(m => m.CityId == volmission.CityId);
+            var themeobjective = _CiPlatformContext.GoalMissions.FirstOrDefault(m => m.MissionId == missionid);
+            string[] Startdate = volmission.StartDate.ToString().Split(" ");
+            string[] Enddate = volmission.EndDate.ToString().Split(" ");
+            VolunteeringVM volunteeringVM = new VolunteeringVM();
+            volunteeringVM.MissionId = missionid;
+            volunteeringVM.Title = volmission.Title;
+            volunteeringVM.ShortDescription = volmission.ShortDescription;
+            volunteeringVM.OrganizationName = volmission.OrganizationName;
+            volunteeringVM.Description = volmission.Description;
+            volunteeringVM.OrganizationDetail = volmission.OrganizationDetail;
+            volunteeringVM.Availability = volmission.Availability;
+            volunteeringVM.MissionType = volmission.MissionType;
+            volunteeringVM.Cityname = City.Name;
+            volunteeringVM.Themename = theme.Title;
+            volunteeringVM.EndDate = Enddate[0];
+            volunteeringVM.StartDate = Startdate[0];
+            volunteeringVM.GoalObjectiveText = themeobjective.GoalObjectiveText;
+            ViewBag.Missiondetail = volunteeringVM;
+
+
+            var relatedmission = _CiPlatformContext.Missions.Where(m => m.ThemeId == volmission.ThemeId && m.MissionId != missionid).ToList();
+            foreach (var item in relatedmission.Take(3))
+            {
+
+                var relcity = _CiPlatformContext.Cities.FirstOrDefault(m => m.CityId == item.CityId);
+                var reltheme = _CiPlatformContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == item.ThemeId);
+                var relgoalobj = _CiPlatformContext.GoalMissions.FirstOrDefault(m => m.MissionId == item.MissionId);
+                string[] Startdate1 = item.StartDate.ToString().Split(" ");
+                string[] Enddate2 = item.EndDate.ToString().Split(" ");
+
+
+
+                relatedlist.Add(new VolunteeringVM
+                {
+                    MissionId = item.MissionId,
+                    Cityname = relcity.Name,
+                    Themename = reltheme.Title,
+                    Title = item.Title,
+                    ShortDescription = item.ShortDescription,
+                    StartDate = Startdate1[0],
+                    EndDate = Enddate2[0],
+                    Availability = item.Availability,
+                    OrganizationName = item.OrganizationName,
+                    GoalObjectiveText = relgoalobj.GoalObjectiveText,
+                    MissionType = item.MissionType,
+                }
+                );
+                ;
+            }
+
+
+            ViewBag.relatedmission = relatedlist.Take(3);
+
+            return View();
         }
 
 
