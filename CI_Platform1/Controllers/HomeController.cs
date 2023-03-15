@@ -45,13 +45,20 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
-        public IActionResult LandingPage(long id, string SearchingMission, int? pageIndex, int Order, long[] ACountries, long[] ACities, long[] Atheme)
+        public IActionResult LandingPage(long id, string SearchingMission, int? pageIndex, int cntry, int Order, long[] ACountries, long[] ACities, long[] Atheme)
         {
             List<Mission> mission = _CiPlatformContext.Missions.ToList();
             List<Mission> finalmission = _CiPlatformContext.Missions.ToList();
             List<Mission> newmission = _CiPlatformContext.Missions.ToList();
             List<GoalMission> goalMissions = _CiPlatformContext.GoalMissions.ToList();
             ViewBag.Goal1 = goalMissions;
+
+            ViewData["country"] = _CiPlatformContext.Countries.ToList();
+
+            //if (cntry != 0)
+            //{
+            //    ViewData["city"] = _CiPlatformContext.Cities.Where(m => m.CountryId == cntry).ToList();
+            //}
 
             //for printing the values inside the cards...............................
             List<City> Cities = _CiPlatformContext.Cities.ToList();
@@ -182,22 +189,23 @@ namespace CI_Platform1.Controllers
             }
 
             //Order By
-            //switch (Order)
-            //{
-            //    case 1:
-            //        mission = _CiPlatformContext.Missions.OrderBy(e => e.Title).ToList();
-            //        break;
-            //    case 2:
-            //        mission = _CiPlatformContext.Missions.OrderByDescending(e => e.StartDate).ToList();
-            //        break;
-            //    case 3:
-            //        mission = _CiPlatformContext.Missions.OrderBy(e => e.EndDate).ToList();
-            //        break;
-            //    default:
-            //        mission = _CiPlatformContext.Missions.OrderBy(e => e.Theme).ToList();
-            //        break;
+            switch (Order)
+            {
+                case 1:
+                    mission = _CiPlatformContext.Missions.OrderBy(e => e.Title).ToList();
+                    break;
+                case 2:
+                    mission = _CiPlatformContext.Missions.OrderByDescending(e => e.StartDate).ToList();
+                    break;
+                case 3:
+                    mission = _CiPlatformContext.Missions.OrderBy(e => e.EndDate).ToList();
+                    break;
+                //default:
+                //    mission = _CiPlatformContext.Missions.OrderBy(e => e.Theme).ToList();
+                //    break;
 
-            //}
+
+            }
 
 
             //Search Mission
@@ -322,7 +330,7 @@ namespace CI_Platform1.Controllers
                 var resetLink = Url.Action("Resetpass", "Home", new { email = model.Email, token }, Request.Scheme);
 
 
-                var fromAddress = new MailAddress("officehl1882@gmail.com", "Sender Name");
+                var fromAddress = new MailAddress("sangareen2019@gmail.com", "Sender Name");
                 var toAddress = new MailAddress(model.Email);
                 var subject = "Password reset request";
                 var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
@@ -335,12 +343,12 @@ namespace CI_Platform1.Controllers
                 var smtpClient = new SmtpClient("smtp.gmail.com", 587)
                 {
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("officehl1882@gmail.com", "yedkuuhuklkqfzwx"),
+                    Credentials = new NetworkCredential("sangareen2019@gmail.com", "ihjxxitmiyotxpym"),
                     EnableSsl = true
                 };
                 smtpClient.Send(message); 
 
-                return RedirectToAction("Forget", "Home");
+                return RedirectToAction("Login", "Home");
             }
 
             return View();
@@ -426,7 +434,7 @@ namespace CI_Platform1.Controllers
             volunteeringVM.GoalObjectiveText = themeobjective.GoalObjectiveText;
             ViewBag.Missiondetail = volunteeringVM;
 
-
+            //Related Missions
             var relatedmission = _CiPlatformContext.Missions.Where(m => m.ThemeId == volmission.ThemeId && m.MissionId != missionid).ToList();
             foreach (var item in relatedmission.Take(3))
             {

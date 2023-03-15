@@ -60,12 +60,12 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
                                 @if (ViewBag.listofcountry != null)
                                 {
-                                    @foreach (var category in ViewBag.listofcountry)
+                                    @foreach (var category in ViewData["country"] as IList<Country>)
                                     {
                                         <li>
                                             <a class="dropdown-item" href="#">
                                                 <div class="form-check">
-                                                    <input class="form-check-input checkbox" type="checkbox" onchange="updateUrlForCountry()" value="@category.Name" id=@category.CountryId name="country" />
+                                                    <input class="form-check-input checkbox" type="checkbox" onchange="updateUrlForCountry()" value="@category.Name" id=@category.CountryId name="country" asp-route-cntry="@category.CountryId"/>
                                                     <label class="form-check-label" for="Checkme1">@category.Name</label>
                                                 </div>
                                             </a>
@@ -86,7 +86,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
                                 @if (ViewBag.listofcity != null)
                                 {
-                                    @foreach (var category in ViewBag.listofcity)
+                                    @foreach (var category in ViewData["city"] as IList<City>)
                                     {
                                         <li>
                                             <a class="dropdown-item" href="#">
@@ -163,12 +163,12 @@
         </div>
     </div>
 </nav>
-
+<div class="row">
 @if (@ViewBag.country != null)
 {
     @foreach (var country in @ViewBag.country)
     {
-        <div class="filter ms-2 ps-2" id="co">
+        <div class="filter ms-2 ps-2 col-1 border" id="co">
             <span class="ps-1">@country.Name</span><button type="button" class="btn-close me-2" aria-label="Close" onclick="countryBtn(this.id)" id=@country.CountryId></button>
         </div>
     }
@@ -178,7 +178,7 @@
 {
     @foreach (var city in @ViewBag.city)
     {
-        <div class="filter ms-2 ps-2" id="ci">
+        <div class="filter ms-2 ps-2 col-1 border" id="ci">
             @city.Name<button type="button" class="btn-close me-2" aria-label="Close" onclick="cityBtn(this.id)" id=@city.CityId></button>
         </div>
     }
@@ -188,12 +188,12 @@
 {
     @foreach (var theme in @ViewBag.theme)
     {
-        <div class="filter ms-2 ps-2" id="ci">
+        <div class="filter ms-2 ps-2 col-1 border" id="ci">
             @theme.Title<button type="button" class="btn-close me-2" aria-label="Close" onclick="themeBtn(this.id)" id=@theme.MissionThemeId></button>
         </div>
     }
 }
-
+</div>
 <script>
                function updateUrlForCountry() {
                     const country = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(el => el.id);

@@ -256,32 +256,6 @@
 
         </div>
 
-        @*Pagination*@
-
-
-        @*  <div class="pager">
-            @if (ViewBag.PageNumber > 1)
-            {
-            <a href="@Url.Action("LandingPage", new { page = ViewBag.PageNumber - 1 })">&lt; Previous</a>
-            }
-
-            @for (int i = 1; i <= ViewBag.TotalPages; i++)
-            {
-            if (i == ViewBag.PageNumber)
-            {
-            <span>@i</span>
-            }
-            else
-            {
-            <a href="@Url.Action("LandingPage", new { page = i })">@i</a>
-            }
-            }
-
-            @if (ViewBag.PageNumber < ViewBag.TotalPages)
-            {
-            <a href="@Url.Action("LandingPage", new { page = ViewBag.PageNumber + 1 })">Next &gt;</a>
-            }
-            </div>*@
         <nav aria-label="Page navigation example" class="d-flex justify-content-center">
             <ul class="pagination">
                 @if (@ViewBag.currentUrl.Contains('?'))
