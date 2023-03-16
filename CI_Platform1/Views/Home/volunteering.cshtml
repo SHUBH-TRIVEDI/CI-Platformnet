@@ -16,6 +16,50 @@
     <link rel="stylesheet" type="text/css" href="/css/volunteering.css">
 </head>
 
+<style>
+    /*CARD*/
+    .card-img {
+        position: relative;
+    }
+
+    .pin {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.514);
+        border-radius: 50px;
+        top: 15px;
+        right: 10px;
+    }
+
+    .heart {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.514);
+        border-radius: 50%;
+        top: 100px;
+        right: 12px;
+    }
+
+    .share {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.514);
+        border-radius: 50%;
+        top: 150px;
+        right: 12px;
+    }
+
+    .env {
+        position: absolute;
+        color: #7d7d7d;
+        background-color: white;
+        border-radius: 40px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        width: fit-content;
+        bottom: -16px;
+    }
+    /*card*/
+</style>
+
 <body>
 
 
@@ -26,18 +70,18 @@
                 <!-- Full-width images with number text -->
                 <div class="mySlides" style="display: none;">
                     <div class="numbertext">1 / 4</div>
-                    <img src="/Images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-3.png"
+                    <img src="~/Images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-3.png"
                          style="width:100%; height: 54vh;">
                 </div>
 
                 <div class="mySlides" style="display: none;">
                     <div class="numbertext">2 / 4</div>
-                    <img src="/Images/img1.png" style="width:100%; height: 54vh;">
+                    <img src="~/images/img1.png" style="width:100%; height: 54vh;">
                 </div>
 
                 <div class="mySlides" style="display: none;">
                     <div class="numbertext">3 / 4</div>
-                    <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
+                    <img src="~/Images/Grow-Trees-On-the-path-to-environment-sustainability-2.png"
                          style="width:100%; height: 54vh;">
                 </div>
 
@@ -50,20 +94,20 @@
                 <div class="row mt-3">
                     <div class="column" style="width:25%">
                         <img class="demo cursor"
-                             src="../Images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png" style="width:100%"
+                             src="~/images/CSR-initiative-stands-for-Coffee--and-Farmer-Equity-1.png" style="width:100%"
                              onclick="currentSlide(1)" alt="The Woods">
                     </div>
                     <div class="column" style="width:25%">
-                        <img class="demo cursor" src="../Images/img1.png" style="width:100%" onclick="currentSlide(2)"
+                        <img class="demo cursor" src="~/images/img1.png" style="width:100%" onclick="currentSlide(2)"
                              alt="Cinque Terre">
                     </div>
                     <div class="column" style="width:25%">
                         <img class="demo cursor"
-                             src="../Images/Grow-Trees-On-the-path-to-environment-sustainability-1.png"
+                             src="~/images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
                              style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
                     </div>
                     <div class="column" style="width:25%">
-                        <img class="demo cursor active" src="../Images/img11.png" style="width:100%"
+                        <img class="demo cursor active" src="~/images/img11.png" style="width:100%"
                              onclick="currentSlide(4)" alt="Northern Lights">
                     </div>
 
@@ -86,14 +130,14 @@
 
                 <div class="d-flex flex-row justify-content-between">
                     <div class="d-flex flex-row align-items-center ms-5">
-                        <img src="../Images/Seats-left.png" alt="" class="" height="30px" width="30px">
+                        <img src="~/images/Seats-left.png" alt="" class="" height="30px" width="30px">
                         <div class="d-flex flex-column ms-2">
                             <p class="d-inline mb-0 pt-2">@ViewBag.Missiondetail.Availability</p>
                             <p class="seat">Seats Left</p>
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-center">
-                        <img src="../Images/mission.png" height="33px" width="33px" alt="">
+                        <img src="~/images/mission.png" height="33px" width="33px" alt="">
                         <div class="d-flex flex-column ms-2">
                             <!-- <p class=" mb-0 pt-2">12/03/2023 </p> -->
                             <div class="progress mt-3 bar me-4">
@@ -109,7 +153,15 @@
 
                 <hr>
                 <div class="row ">
-                    <button class="btn col ton me-3" type="button">
+                    @*          @if (I._tp_favourite == 0)
+                        {
+                        <li><button class="btn-link glyphicon glyphicon-heart-empty" onclick="Fav(@I._id)"></button></li>
+                        }
+                        else
+                        {
+                        <li><button class="btn-link glyphicon glyphicon-heart-empty" onclick="UnFav(@I._id)"></button></li>
+                        }*@
+                    <button class="btn col ton me-3" type="button" onclick="Fav()">
                         <i class="bi bi-heart"></i>
                         <span>Add to Favourite</span>
                     </button>
@@ -122,13 +174,34 @@
                 <div class="rule mt-3">
                     <hr>
                     <button class="hrbtn">
-                        <div class="text-center">
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
-                        </div>
+                        @* <div class="text-center">
+                            <i class="bi bi-star rating_star" name="rating_star"></i>
+                            <i class="bi bi-star rating_star" name="rating_star"></i>
+                            <i class="bi bi-star rating_star" name="rating_star"></i>
+                            <i class="bi bi-star rating_star" name="rating_star"></i>
+                            <i class="bi bi-star rating_star" name="rating_star"></i>
+                            </div>*@
+                            <div class="text-center">
+                                @if (ViewBag.Missiondetail.UserPrevRating != null)
+                                {
+                                    @for (var i = 1; i <=int.Parse(ViewBag.Missiondetail.UserPrevRating); i++)
+                                    {
+                                        <i class="bi bi-star-fill star star-@i" style="color:#F88634;" id="@i" onclick="ratemission(this.id,@ViewBag.Missiondetail.MissionId, @ViewBag.user.UserId)"></i>
+                                    }
+                                    @for (var i = int.Parse(ViewBag.Missiondetail.UserPrevRating) + 1; i <= 5; i++)
+                                    {
+                                        <i class="bi bi-star-fill star star-@i" id="@i" onclick="ratemission(this.id,@ViewBag.Missiondetail.MissionId, @ViewBag.user.UserId)"></i>
+                                    }
+                                }
+                                else
+                                {
+                                    <i class="bi bi-star-fill star star-1" id="1" onclick="ratemission(this.id,@ViewBag.Missiondetail.MissionId, @ViewBag.user.UserId)"></i>
+                                    <i class="bi bi-star-fill star star-2" id="2" onclick="ratemission(this.id,@ViewBag.Missiondetail.MissionId, @ViewBag.user.UserId)"></i>
+                                    <i class="bi bi-star-fill star star-3" id="3" onclick="ratemission(this.id,@ViewBag.Missiondetail.MissionId, @ViewBag.user.UserId)"></i>
+                                    <i class="bi bi-star-fill star star-4" id="4" onclick="ratemission(this.id,@ViewBag.Missiondetail.MissionId, @ViewBag.user.UserId)"></i>
+                                    <i class="bi bi-star-fill star star-5" id="5" onclick="ratemission(this.id,@ViewBag.Missiondetail.MissionId, @ViewBag.user.UserId)"></i>
+                                }
+                                </div>
                     </button>
                     <hr>
                 </div>
@@ -635,7 +708,7 @@
                                     <img src="/Images/star-empty.png" class="star" alt="">
                                 </div>
                             </div>
-                        
+
                             @if (category.MissionType == "Time")
                             {
                                 <div class="rule mt-1">
@@ -646,17 +719,17 @@
                             }
                             else
                             {
-                                        <div class="rule">
-                                            <hr>
-                                            <button class="hrbtn">@category.GoalObjectiveText</button>
-                                            <hr>
-                                        </div>
-                                    }
+                                <div class="rule">
+                                    <hr>
+                                    <button class="hrbtn">@category.GoalObjectiveText</button>
+                                    <hr>
+                                </div>
+                            }
 
 
                             <div class="d-flex flex-row justify-content-between">
                                 <div class="d-flex flex-row align-items-center">
-                                    <img src="../Images/Seats-left.png" alt="" class="" height="30px" width="30px">
+                                    <img src="~/images/Seats-left.png" alt="" class="" height="30px" width="30px">
                                     <div class="d-flex flex-column ms-2">
                                         <p class="d-inline mb-0 pt-2">@category.Availability</p>
                                         <p class="seat">Seats Left</p>
@@ -712,7 +785,8 @@
                 crossorigin="anonymous"></script>
         <script src="/js/volunteering.js"></script>
 
-
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </body>
 
 

@@ -25,4 +25,3 @@ C:\Users\tatva\Desktop\Tatvasoft Projects\CI_Platform_.net\CI_Entities1\obj\Debu
 C:\Users\tatva\Desktop\Tatvasoft Projects\CI_Platform_.net\CI_Entities1\obj\Debug\net6.0\ref\CI_Entities1.dll
 C:\Users\tatva\Desktop\Tatvasoft Projects\CI_Platform_.net\CI_Entities1\obj\Debug\net6.0\CI_Entities1.pdb
 C:\Users\tatva\Desktop\Tatvasoft Projects\CI_Platform_.net\CI_Entities1\obj\Debug\net6.0\CI_Entities1.genruntimeconfig.cache
-C:\Users\tatva\Desktop\Tatvasoft Projects\CI_Platform_.net\CI_Entities1\obj\Debug\net6.0\CI_Entities1.csproj.AssemblyReference.cache

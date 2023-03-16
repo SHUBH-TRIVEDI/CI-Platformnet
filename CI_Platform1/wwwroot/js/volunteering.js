@@ -46,3 +46,101 @@ tabs.forEach(tab => {
         document.getElementById(this.dataset.tabContent).classList.add('active');
     });
 });
+
+
+
+// Add to Favourites
+
+function Fav(id) {
+    var url = '@Url.Action("_Fav", "Home")';
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            id: id
+        },
+        success: function (data) {
+            if (data.length == 0) // No errors
+                alert("Fave success!");
+        },
+        error: function (jqXHR) { // Http Status is not 200
+        },
+        complete: function (jqXHR, status) { // Whether success or error it enters here
+        }
+    });
+};
+
+function UnFav(id) {
+    var url = '@Url.Action("_UnFav", "Home")';
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            id: id
+        },
+        success: function (data) {
+            if (data.length == 0) // No errors
+                alert("Unfave success!");
+        },
+        error: function (jqXHR) { // Http Status is not 200
+        },
+        complete: function (jqXHR, status) { // Whether success or error it enters here
+        }
+    });
+};
+
+function ratemission(starId, missionId, id) {
+    $.ajax({
+        url: '/Home/AddRating',
+        type: 'POST',
+        data: { missionId: missionId, id: id, rating: starId },
+        success: function (result) {
+            if (parseInt(result.ratingExists.rating),10) {
+                // Update the heart icon to show that the mission has been liked
+                for (i = 1; i <= parseInt(result.ratingExists.rating, 10); i++) {
+
+                    var starbtn = document.querySelector('.star-' + i);
+                    starbtn.style.color = "#F88634";
+                }
+                for (i = parseInt(result.ratingExists.rating, 10) + 1; i <= 5; i++) {
+
+                    var starbtn = document.querySelector('.star-' + i);
+                    starbtn.style.color = "black";
+                }
+            } else {
+                // Update the heart icon to show that the mission has been unliked
+                for (i = 1; i <= parseInt(result.newRating.rating, 10); i++) {
+
+                    var starbtn = document.getElementById(String(i));
+
+                    starbtn.style.color = "#F88634";
+                }
+                for (i = parseInt(result.newRating.rating, 10) + 1; i <= 5; i++) {
+
+                    var starbtn = document.getElementById(String(i));
+
+                    starbtn.style.color = "black";
+                }
+            }
+        },
+        error: function () {
+            // Handle error response from the server, e.g. show an error message to the user
+            alert('Error: Could not like mission.');
+        }
+    });
+}
+//function Fav() {
+//    const params = new URLSearchParams(window.location.search);
+//    const query = params.get("missionid")
+
+//    $.ajax({
+//        url: "/Home/Fav",
+//        data: { missionId: query },
+//        success: function (result) {
+//            alert("successs");
+//            console.log(result)
+//        }
+//    });
+//}

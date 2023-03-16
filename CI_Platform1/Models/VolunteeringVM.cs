@@ -32,6 +32,7 @@
 
 
         public string GoalValue { get; set; } = null!;
+        public string UserPrevRating { get; set; }
 
     }
 }

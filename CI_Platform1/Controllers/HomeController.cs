@@ -5,7 +5,7 @@ using CI_Platform1.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -15,7 +15,7 @@ namespace CI_Platform1.Controllers
 {
     public class HomeController : Controller
     {
-        int i = 0, i1 = 0, j = 0, j1 = 0, k=0, k1=0;
+        int i = 0, i1 = 0, j = 0, j1 = 0, k = 0, k1 = 0;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger, CiPlatformContext CiPlatformContext)
@@ -52,14 +52,7 @@ namespace CI_Platform1.Controllers
             List<Mission> newmission = _CiPlatformContext.Missions.ToList();
             List<GoalMission> goalMissions = _CiPlatformContext.GoalMissions.ToList();
             ViewBag.Goal1 = goalMissions;
-
-            ViewData["country"] = _CiPlatformContext.Countries.ToList();
-
-            //if (cntry != 0)
-            //{
-            //    ViewData["city"] = _CiPlatformContext.Cities.Where(m => m.CountryId == cntry).ToList();
-            //}
-
+            ViewBag.user = _CiPlatformContext.Users.FirstOrDefault(e => e.UserId == id);
             //for printing the values inside the cards...............................
             List<City> Cities = _CiPlatformContext.Cities.ToList();
             ViewBag.listofcity = Cities;
@@ -142,7 +135,7 @@ namespace CI_Platform1.Controllers
                             j1++;
                         }
                         Cities.AddRange(city1);
-                  
+
                     }
                 }
                 ViewBag.city = Cities;
@@ -189,23 +182,23 @@ namespace CI_Platform1.Controllers
             }
 
             //Order By
-            switch (Order)
-            {
-                case 1:
-                    mission = _CiPlatformContext.Missions.OrderBy(e => e.Title).ToList();
-                    break;
-                case 2:
-                    mission = _CiPlatformContext.Missions.OrderByDescending(e => e.StartDate).ToList();
-                    break;
-                case 3:
-                    mission = _CiPlatformContext.Missions.OrderBy(e => e.EndDate).ToList();
-                    break;
-                //default:
-                //    mission = _CiPlatformContext.Missions.OrderBy(e => e.Theme).ToList();
-                //    break;
+            //switch (Order)
+            //{
+            //    case 1:
+            //        mission = _CiPlatformContext.Missions.OrderBy(e => e.Title).ToList();
+            //        break;
+            //    case 2:
+            //        mission = _CiPlatformContext.Missions.OrderByDescending(e => e.StartDate).ToList();
+            //        break;
+            //    case 3:
+            //        mission = _CiPlatformContext.Missions.OrderBy(e => e.EndDate).ToList();
+            //        break;
+            //    //default:
+            //    //    mission = _CiPlatformContext.Missions.OrderBy(e => e.Theme).ToList();
+            //    //    break;
 
 
-            }
+            //}
 
 
             //Search Mission
@@ -267,7 +260,7 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
-       
+
 
 
         private readonly CiPlatformContext _CiPlatformContext;
@@ -291,7 +284,7 @@ namespace CI_Platform1.Controllers
                     HttpContext.Session.SetString("userID", username);
                     HttpContext.Session.SetString("Firstname", user.FirstName);
 
-                    return RedirectToAction("LandingPage", "Home");
+                    return RedirectToAction("LandingPage", "Home", new {@id = user.UserId});
                 }
             }
 
@@ -346,7 +339,7 @@ namespace CI_Platform1.Controllers
                     Credentials = new NetworkCredential("sangareen2019@gmail.com", "ihjxxitmiyotxpym"),
                     EnableSsl = true
                 };
-                smtpClient.Send(message); 
+                smtpClient.Send(message);
 
                 return RedirectToAction("Login", "Home");
             }
@@ -405,16 +398,16 @@ namespace CI_Platform1.Controllers
 
 
 
-
         //Volunteering Missions Model
-        public IActionResult volunteering(int missionid)
+        public IActionResult volunteering(long missionid, long id, long missionId)
         {
-
+            ViewBag.user = _CiPlatformContext.Users.FirstOrDefault(e => e.UserId == id);
             List<VolunteeringVM> relatedlist = new List<VolunteeringVM>();
 
             var volmission = _CiPlatformContext.Missions.FirstOrDefault(m => m.MissionId == missionid);
             var theme = _CiPlatformContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == volmission.ThemeId);
             var City = _CiPlatformContext.Cities.FirstOrDefault(m => m.CityId == volmission.CityId);
+            var prevRating = _CiPlatformContext.MissionRatings.Where(e => e.MissionId == missionid && e.UserId == id).FirstOrDefault();
             var themeobjective = _CiPlatformContext.GoalMissions.FirstOrDefault(m => m.MissionId == missionid);
             string[] Startdate = volmission.StartDate.ToString().Split(" ");
             string[] Enddate = volmission.EndDate.ToString().Split(" ");
@@ -431,6 +424,7 @@ namespace CI_Platform1.Controllers
             volunteeringVM.Themename = theme.Title;
             volunteeringVM.EndDate = Enddate[0];
             volunteeringVM.StartDate = Startdate[0];
+            if (prevRating != null) { volunteeringVM.UserPrevRating = prevRating.Rating; }
             volunteeringVM.GoalObjectiveText = themeobjective.GoalObjectiveText;
             ViewBag.Missiondetail = volunteeringVM;
 
@@ -474,11 +468,37 @@ namespace CI_Platform1.Controllers
 
 
 
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //-------------------------------Rating---------------------------
+        public async Task<IActionResult> AddRating(string rating, long id, long missionId)
+        {
+            MissionRating ratingExists = await _CiPlatformContext.MissionRatings.FirstOrDefaultAsync(fm => fm.UserId == id && fm.MissionId == missionId);
+
+            if (ratingExists != null)
+            {
+                ratingExists.Rating = rating;
+                //ratingExists.UserId = id;
+                //ratingExists.MissionId = missionId;
+                _CiPlatformContext.MissionRatings.Update(ratingExists);
+                await _CiPlatformContext.SaveChangesAsync();
+                return Json(new { success = true, ratingExists, isRated = true });
+
+            }
+            else
+            {
+                var newRating = new MissionRating();
+                newRating.Rating = rating;
+                newRating.UserId = id;
+                newRating.MissionId = missionId;
+                await _CiPlatformContext.MissionRatings.AddAsync(newRating); await _CiPlatformContext.SaveChangesAsync();
+                return Json(new { success = true, newRating, isRated = true });
+            }
+
         }
     }
 }

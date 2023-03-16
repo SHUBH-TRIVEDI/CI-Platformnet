@@ -1,6 +1,8 @@
 ﻿@using CI_Entities1.Models
 @model List<CI_Entities1.Models.Mission>
-
+@{
+var id = Context.Session.GetString("userID");
+}
 @*@{
     var mission = (List<Mission>)ViewData["mission"];
     }*@
@@ -57,33 +59,6 @@
         margin-left: auto;
     }
 
-    .pager {
-        text-align: center;
-    }
-
-        .pager a, .pager span {
-            display: inline-block;
-            margin: 5px;
-            padding: 5px 10px;
-            background-color: #f2f2f2;
-            color: #333;
-            text-decoration: none;
-            border-radius: 3px;
-        }
-
-            .pager a:hover {
-                background-color: #ddd;
-            }
-
-            .pager a.prev {
-                padding-left: 0;
-                background: url("path/to/arrow-left.png") no-repeat center left;
-            }
-
-            .pager a.next {
-                padding-right: 0;
-                background: url("path/to/arrow-right.png") no-repeat center right;
-            }
 </style>
 
 
@@ -209,7 +184,7 @@
 
                             <div class="d-flex flex-row justify-content-between">
                                 <div class="d-flex flex-row align-items-center">
-                                    <img src="../Images/Seats-left.png" alt="" class="" height="30px" width="30px">
+                                    <img src="~/images/Seats-left.png" alt="" class="" height="30px" width="30px">
                                     <div class="d-flex flex-column ms-2">
                                         <p class="d-inline mb-0 pt-2">@category.Availability</p>
                                         <p class="seat">Seats Left</p>
@@ -241,7 +216,7 @@
                             </div>
 
                             <div class="text-center">
-                                <a href="/Home/volunteering?missionid=@category.MissionId" class="btn cardbtn mx-auto ">
+                                <a href="/Home/volunteering/@ViewBag.user.UserId?missionid=@category.MissionId" class="btn cardbtn mx-auto ">
                                     <span>Story listing</span> <img class="ms-1"
                                                                 src="/Images/right-arrow.png">
                                 </a>

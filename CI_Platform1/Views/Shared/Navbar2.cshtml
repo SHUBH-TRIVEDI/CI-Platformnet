@@ -60,7 +60,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
                                 @if (ViewBag.listofcountry != null)
                                 {
-                                    @foreach (var category in ViewData["country"] as IList<Country>)
+                                    @foreach (var category in ViewBag.listofcountry)
                                     {
                                         <li>
                                             <a class="dropdown-item" href="#">
@@ -86,7 +86,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
                                 @if (ViewBag.listofcity != null)
                                 {
-                                    @foreach (var category in ViewData["city"] as IList<City>)
+                                    @foreach (var category in ViewBag.listofcity)
                                     {
                                         <li>
                                             <a class="dropdown-item" href="#">
