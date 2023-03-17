@@ -47,7 +47,9 @@ namespace CI_Platform1.Controllers
 
         public IActionResult LandingPage(long id, string SearchingMission, int? pageIndex, int cntry, int Order, long[] ACountries, long[] ACities, long[] Atheme)
         {
+
             List<Mission> mission = _CiPlatformContext.Missions.ToList();
+            ViewBag.listofmission = mission;
             List<Mission> finalmission = _CiPlatformContext.Missions.ToList();
             List<Mission> newmission = _CiPlatformContext.Missions.ToList();
             List<GoalMission> goalMissions = _CiPlatformContext.GoalMissions.ToList();
@@ -64,7 +66,9 @@ namespace CI_Platform1.Controllers
             ViewBag.listoftheme = themes;
 
             //User Admin Name
-            int? userid = HttpContext.Session.GetInt32("userID");
+            var  userid = HttpContext.Session.GetString("userID");
+            ViewBag.UserId = int.Parse(userid);
+
             if (userid == null)
             {
                 return RedirectToAction("Login", "Home");
@@ -281,7 +285,7 @@ namespace CI_Platform1.Controllers
                 }
                 else
                 {
-                    HttpContext.Session.SetString("userID", username);
+                    HttpContext.Session.SetString("userID", user.UserId.ToString());
                     HttpContext.Session.SetString("Firstname", user.FirstName);
 
                     return RedirectToAction("LandingPage", "Home", new {@id = user.UserId});
@@ -400,9 +404,17 @@ namespace CI_Platform1.Controllers
 
         //Volunteering Missions Model
         public IActionResult volunteering(long missionid, long id, long missionId)
+            
         {
+            var userid = HttpContext.Session.GetString("userID");
+            ViewBag.UserId = int.Parse(userid);
+
             ViewBag.user = _CiPlatformContext.Users.FirstOrDefault(e => e.UserId == id);
             List<VolunteeringVM> relatedlist = new List<VolunteeringVM>();
+
+            IEnumerable<Mission> objMis = _CiPlatformContext.Missions.ToList();
+            IEnumerable<Comment> objComm = _CiPlatformContext.Comments.ToList();
+            IEnumerable<Mission> selected = _CiPlatformContext.Missions.Where(m => m.MissionId == missionid).ToList();
 
             var volmission = _CiPlatformContext.Missions.FirstOrDefault(m => m.MissionId == missionid);
             var theme = _CiPlatformContext.MissionThemes.FirstOrDefault(m => m.MissionThemeId == volmission.ThemeId);
@@ -461,13 +473,44 @@ namespace CI_Platform1.Controllers
 
 
             ViewBag.relatedmission = relatedlist.Take(3);
+            return View(selected);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Addfav(long Id, long missionId)
+        {
+            FavoriteMission fav = await _CiPlatformContext.FavoriteMissions.FirstOrDefaultAsync(fm => fm.UserId == Id && fm.MissionId == missionId);
+            if (fav != null)
+            {
 
-            return View();
+                _CiPlatformContext.Remove(fav);
+                _CiPlatformContext.SaveChanges();
+                return Json(new { success = true, favmission = "1" });
+            }
+            else
+            {
+                var ratingele = new FavoriteMission();
+
+                ratingele.UserId = Id;
+                ratingele.MissionId = missionId;
+                _CiPlatformContext.AddAsync(ratingele);
+                _CiPlatformContext.SaveChanges();
+                return Json(new { success = true, favmission = "0" });
+            }
+        }
+        //comments
+        public JsonResult PostComment(int missionId, string Content)
+        {
+            Comment objComment = new Comment();
+            objComment.UserId = Convert.ToInt64(HttpContext.Session.GetString("userID"));
+            objComment.MissionId = missionId;
+            objComment.Comment1 = Content;
+            objComment.CreatedAt = DateTime.Now;
+            _CiPlatformContext.Comments.Add(objComment);
+            _CiPlatformContext.SaveChanges();
+            return Json(objComment);
         }
 
-
-
-
+        //===============================
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -475,6 +518,7 @@ namespace CI_Platform1.Controllers
         }
 
         //-------------------------------Rating---------------------------
+        [HttpPost]
         public async Task<IActionResult> AddRating(string rating, long id, long missionId)
         {
             MissionRating ratingExists = await _CiPlatformContext.MissionRatings.FirstOrDefaultAsync(fm => fm.UserId == id && fm.MissionId == missionId);

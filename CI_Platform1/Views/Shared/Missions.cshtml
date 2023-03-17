@@ -1,8 +1,8 @@
 ﻿@using CI_Entities1.Models
 @model List<CI_Entities1.Models.Mission>
-@{
-var id = Context.Session.GetString("userID");
-}
+@*@{
+    var id = Context.Session.GetString("userID");
+}*@
 @*@{
     var mission = (List<Mission>)ViewData["mission"];
     }*@
@@ -122,9 +122,13 @@ var id = Context.Session.GetString("userID");
                                 <p class="text-white mb-0 px-2">@category.City.Name</p>
                             </div>
 
-                            <div class="heart align-items-center px-2 py-1">
+                            @*  <div class="heart align-items-center px-2 py-1">
                                 <img src="~/Images/heart.png" alt="">
-                            </div>
+                                </div>*@
+
+                            <button class="heart align-items-center px-2 py-1 Addfavourite" @*onclick="addtofav1( @ViewBag.listofmission.missionId,@ViewBag.UserId)"*@>
+                                <i class="bi bi-heart-fill" id="heart"></i>
+                            </button>
 
                             <div class="share align-items-center px-2 py-1">
                                 <img src="~/Images/user.png" alt="">
@@ -161,9 +165,9 @@ var id = Context.Session.GetString("userID");
                             @if (@category.MissionType == "Time")
                             {
                                 <div class="rule mt-1">
-                                    <hr >
+                                    <hr>
                                     <button class="hrbtn">From @category.StartDate.ToString().Split(" ")[0] until @category.EndDate.ToString().Split(" ")[0]</button>
-                                    <hr >
+                                    <hr>
                                 </div>
                             }
                             else
@@ -173,9 +177,9 @@ var id = Context.Session.GetString("userID");
                                     @if (@category.MissionId == goal.MissionId)
                                     {
                                         <div class="rule">
-                                            <hr >
+                                            <hr>
                                             <button class="hrbtn">@goal.GoalObjectiveText</button>
-                                            <hr >
+                                            <hr>
                                         </div>
                                     }
                                 }
@@ -324,6 +328,29 @@ var id = Context.Session.GetString("userID");
 
         $(document).on('click', '.btn-grid', gridList);
         $(document).on('click', '.btn-list', showList);
+
+                    //--------------------------Add to Favroite Mission--------------------------------------------
+                                    function addtofav1(missionId, Id) {
+                            $.ajax({
+                                url: '/Home/Addfav',
+                                type: 'POST',
+                                data: { missionId: missionId, Id: Id },
+                                success: function (result) {
+                                    if (result.favmission == "0") {
+                                        var favbtn = document.getElementById("favmissiondiv");
+                                        var heartbtn = document.getElementById("heart");
+                                        heartbtn.style.color = "#F88634";
+                                        favbtn.style.color = "orange"
+                                    }
+                                    else {
+                                        var favbtn = document.getElementById("favmissiondiv");
+                                        var heartbtn = document.getElementById("heart");
+                                        heartbtn.style.color = "black";
+                                        favbtn.style.color = "black"
+                                    }
+                                }
+                            });
+                        }
 
     </script>
 

@@ -34,5 +34,11 @@
         public string GoalValue { get; set; } = null!;
         public string UserPrevRating { get; set; }
 
+        // ..............comment
+        public int user_id { get; set; }
+        public int mission_id { get; set; }
+        public string content { get; set; }
+        public DateTime created_at { get; set; }
+
     }
 }

@@ -66,7 +66,7 @@ public partial class CiPlatformContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=PCE51\\SQL2019;DataBase=CI_PLATFORM;User ID=sa;Password=Tatva@123 ;Trusted_Connection=True; TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=PCE51\\SQL2019;Database=CI_PLATFORM;Trusted_Connection=True; TrustServerCertificate=True;Encrypt=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -210,6 +210,9 @@ public partial class CiPlatformContext : DbContext
                 .IsUnicode(false)
                 .HasDefaultValueSql("('pending')")
                 .HasColumnName("approval_status");
+            entity.Property(e => e.Comment1)
+                .HasMaxLength(800)
+                .HasColumnName("comment");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
@@ -230,6 +233,7 @@ public partial class CiPlatformContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__comment__user_id__5EBF139D");
         });
 

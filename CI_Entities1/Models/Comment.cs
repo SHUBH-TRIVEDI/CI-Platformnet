@@ -7,7 +7,7 @@ public partial class Comment
 {
     public long CommentId { get; set; }
 
-    public long? UserId { get; set; }
+    public long UserId { get; set; }
 
     public long MissionId { get; set; }
 
@@ -19,7 +19,9 @@ public partial class Comment
 
     public DateTime? DeletedAt { get; set; }
 
+    public string? Comment1 { get; set; }
+
     public virtual Mission Mission { get; set; } = null!;
 
-    public virtual User? User { get; set; }
+    public virtual User User { get; set; } = null!;
 }
