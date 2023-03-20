@@ -1,11 +1,6 @@
 ﻿@using CI_Entities1.Models
 @model List<CI_Entities1.Models.Mission>
-@*@{
-    var id = Context.Session.GetString("userID");
-}*@
-@*@{
-    var mission = (List<Mission>)ViewData["mission"];
-    }*@
+
 <html>
 <style>
     /*card*/
@@ -126,12 +121,43 @@
                                 <img src="~/Images/heart.png" alt="">
                                 </div>*@
 
-                            <button class="heart align-items-center px-2 py-1 Addfavourite" @*onclick="addtofav1( @ViewBag.listofmission.missionId,@ViewBag.UserId)"*@>
+                            <button class="heart align-items-center px-2 py-1 Addfavourite favmissiondiv" onclick="addtofav1( @category.MissionId,@ViewBag.UserId)">
                                 <i class="bi bi-heart-fill" id="heart"></i>
                             </button>
 
                             <div class="share align-items-center px-2 py-1">
+                                @*<img src="~/Images/user.png" alt="">*@
+                                                    <button class="btn col ton Addfavourite" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <img src="~/Images/user.png" alt="">
+
+                    </button>
+
+                    <div class="modal fade modal-dialog-scrollable" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Send Recommend TO</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body overflow-y-auto" style="height:200px;">
+                                    @foreach (var user in ViewBag.alluser)
+                                    {
+
+                                        <div class="d-flex my-3 bg-light ">
+                                            <img src="~/images/volunteer1.png" class="rounded-5 me-5" style="border-radius:50%;width:50px;height:50px">
+                                            <label class=" ms-4 mt-2 me-auto"> @user.FirstName @user.LastName </label>
+                                            <input class="form-check-input me-2 mt-2" type="checkbox" value="" id=@user.UserId name="mail">
+                                        </div>
+
+                                    }
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="sendmail" onclick="sendmail(@ViewBag.Missiondetail.MissionId)">Send Mission</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                             </div>
 
                             <div class="env align-items-center px-2 py-1 ">
@@ -157,11 +183,7 @@
                                     <img src="/Images/star-empty.png" class="star" alt="">
                                 </div>
                             </div>
-                            @*<div class="rule mt-1">
-                                <hr>
-                                <button class="hrbtn">@category.StartDate.ToString().Split(" ")[0] until @category.EndDate.ToString().Split(" ")[0]</button>
-                                <hr>
-                                </div>*@
+                        
                             @if (@category.MissionType == "Time")
                             {
                                 <div class="rule mt-1">
@@ -352,6 +374,30 @@
                             });
                         }
 
+                        //Reccomend to coworker
+           function sendmail(id) {
+const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
+var send = document.getElementById("sendmail");
+send.innerHTML="Sending"
+$.ajax({
+url: '/Home/Sendmail',
+type: 'POST',
+data: { userid: mail ,id:id},
+success: function (result) {
+alert("Recomendations sent successfully!");
+const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
+checkboxes.forEach((checkbox) => {
+checkbox.checked = false;
+});
+send.innerHTML="sent"
+},
+error: function () {
+// Handle error response from the server, e.g. show an error message to the user
+alert('Error: Could not recommend mission.');
+}
+});
+
+}
     </script>
 
     @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

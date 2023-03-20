@@ -1,7 +1,5 @@
 ﻿@using CI_Entities1.Models
-@{
 
-}
 <partial name="Navbar1" />
 
 <!DOCTYPE html>
@@ -169,12 +167,46 @@
                         <label class="ms-2" id="favmissiondiv">ADD to Favourite</label>
                     </button>
 
-                    <button class="btn col ton " type="button">
+                    @* <button class="btn col ton " type="button">
+                        <i class="bi bi-square-fill"></i>
+                        <span class="font-si">Recommend to a Co-Worker</span>
+                        </button>
+
+                    *@
+                    <button class="btn col ton Addfavourite" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <i class="bi bi-square-fill"></i>
                         <span class="font-si">Recommend to a Co-Worker</span>
                     </button>
+
+                    <div class="modal fade modal-dialog-scrollable" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Send Recommend TO</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body overflow-y-auto" style="height:200px;">
+                                    @foreach (var user in ViewBag.alluser)
+                                    {
+
+                                        <div class="d-flex my-3 bg-light ">
+                                            <img src="~/images/volunteer1.png" class="rounded-5 me-5" style="border-radius:50%;width:50px;height:50px">
+                                            <label class=" ms-4 mt-2 me-auto"> @user.FirstName @user.LastName </label>
+                                            <input class="form-check-input me-2 mt-2" type="checkbox" value="" id=@user.UserId name="mail">
+                                        </div>
+
+                                    }
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="sendmail" onclick="sendmail(@ViewBag.Missiondetail.MissionId)">Send Mission</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
+                @*RAting*@
                 <div class="rule mt-3">
                     <hr>
                     <button class="hrbtn">
@@ -254,7 +286,7 @@
                     </div>
 
                     <div class="tab-content">
-                        <div class="tab-content-item active" id="tab1-content">
+                        <div class="tab-content-item " id="tab1-content">
                             <h2>Introduction</h2>
                             <p>
                                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae nesciunt, ducimus
@@ -330,7 +362,7 @@
                         </div>
 
                         @*............................comments................................*@
-                        <div class="tab-content-item " id="tab3-content">
+                        <div class="tab-content-item active" id="tab3-content">
                             <h5>Comments</h5>
                             <div class="input-group mt-3 mb-3">
                                 <textarea class="form-control" aria-label="With textarea" id="commentarea"
@@ -355,54 +387,10 @@
                                                         @i.Comment1
                                                     </p>
                                                     <p style="margin: 0.5rem 0 0 1rem;">@i.CreatedAt.ToString("dddd, dd MMMM yyyy , hh:mm tt")</p>
-                                                    
+
                                                 </div>
                                             </div>
                                         }
-
-                                        @* @foreach (var comment in Model)
-                                            {
-                                            <li class="list-group-item d-flex">
-                                            <img src="/images/volunteer1.png" class="rounded-circle"
-                                            style="height:60px;width:60px" />
-                                            <div class="ms-2">
-                                            <p style="font-size:15px" class="m-0">
-                                            <strong>Margeret Walsah</strong>
-                                            </p>
-                                            <p style="font-size:10px" class="m-0">
-                                            @comment.CreatedAt
-                                            </p>
-                                            <p>@comment.content</p>
-                                            </div>
-                                            </li>
-                                            }*@
-                                        @*                                        <li class="list-group-item d-flex">
-                                            <img src="/images/volunteer2.png" class="rounded-circle"
-                                            style="height:60px;width:60px" />
-                                            <div class="ms-2">
-                                            <p style="font-size:15px" class="m-0">
-                                            <strong>Margeret Walsah</strong>
-                                            </p>
-                                            <p style="font-size:10px" class="m-0">
-                                            Monday, October 211,2019, 4:57 PM
-                                            </p>
-                                            <p>Nice mission great opportunity for people</p>
-                                            </div>
-                                            </li>
-
-                                            <li class="list-group-item d-flex">
-                                            <img src="../Images/volunteer8.png" class="rounded-circle"
-                                            style="height:60px;width:60px" />
-                                            <div class="ms-2">
-                                            <p style="font-size:15px" class="m-0">
-                                            <strong>Margeret Walsah</strong>
-                                            </p>
-                                            <p style="font-size:10px" class="m-0">
-                                            Monday, October 211,2019, 4:57 PM
-                                            </p>
-                                            <p>Nice mission great opportunity for people</p>
-                                            </div>
-                                            </li>*@
                                     </ul>
                                 </div>
                             </div>
@@ -464,43 +452,43 @@
                             <div class="carousel-item active mt-5">
                                 <div class="row">
                                     <div class="col column2">
-                                        <img src="../Images/volunteer1.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Andrew Johnson
-                                    </div>
-                                    <div class="col column2">
-                                        <img src="../Images/volunteer2.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Charles Vigue
-                                    </div>
-                                    <div class="col column2">
-                                        <img src="../Images/volunteer3.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Kathryn Roberts
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col column2">
-                                        <img src="../Images/volunteer4.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Estella Fowles
-                                    </div>
-                                    <div class="col column2">
-                                        <img src="../Images/volunteer5.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Rose Lewis
-                                    </div>
-                                    <div class="col column2">
-                                        <img src="../Images/volunteer6.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Raymond Pabon
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col column2">
-                                        <img src="../Images/volunteer7.png" class="rounded-circle"
+                                        <img src="/images/volunteer7.png" class="rounded-circle"
                                              style="height:60px;width:60px" />Travis Steen
                                     </div>
                                     <div class="col column2">
-                                        <img src="../Images/volunteer8.png" class="rounded-circle"
+                                        <img src="/images/volunteer8.png" class="rounded-circle"
                                              style="height:60px;width:60px" />Sarah Santillan
                                     </div>
                                     <div class="col column2">
-                                        <img src="../Images/volunteer9.png" class="rounded-circle"
+                                        <img src="/images/volunteer9.png" class="rounded-circle"
+                                             style="height:60px;width:60px" />Linda Richards
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col column2">
+                                        <img src="/images/volunteer7.png" class="rounded-circle"
+                                             style="height:60px;width:60px" />Travis Steen
+                                    </div>
+                                    <div class="col column2">
+                                        <img src="/images/volunteer8.png" class="rounded-circle"
+                                             style="height:60px;width:60px" />Sarah Santillan
+                                    </div>
+                                    <div class="col column2">
+                                        <img src="/images/volunteer9.png" class="rounded-circle"
+                                             style="height:60px;width:60px" />Linda Richards
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col column2">
+                                        <img src="/images/volunteer7.png" class="rounded-circle"
+                                             style="height:60px;width:60px" />Travis Steen
+                                    </div>
+                                    <div class="col column2">
+                                        <img src="/images/volunteer8.png" class="rounded-circle"
+                                             style="height:60px;width:60px" />Sarah Santillan
+                                    </div>
+                                    <div class="col column2">
+                                        <img src="/images/volunteer9.png" class="rounded-circle"
                                              style="height:60px;width:60px" />Linda Richards
                                     </div>
                                 </div>
@@ -511,34 +499,34 @@
                             </div>
 
                             <div class="carousel-item">
-                                <div class="row">
+                                @*  <div class="row">
                                     <div class="col column2">
-                                        <img src="../Images/volunteer1.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Andrew Johnson
+                                    <img src="../Images/volunteer1.png" class="rounded-circle"
+                                    style="height:60px;width:60px" />Andrew Johnson
                                     </div>
                                     <div class="col column2">
-                                        <img src="../Images/volunteer2.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Charles Vigue
+                                    <img src="../Images/volunteer2.png" class="rounded-circle"
+                                    style="height:60px;width:60px" />Charles Vigue
                                     </div>
                                     <div class="col column2">
-                                        <img src="../Images/volunteer3.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Kathryn Roberts
+                                    <img src="../Images/volunteer3.png" class="rounded-circle"
+                                    style="height:60px;width:60px" />Kathryn Roberts
                                     </div>
-                                </div>
-                                <div class="row">
+                                    </div>*@
+                                @* <div class="row">
                                     <div class="col column2">
-                                        <img src="../Images/volunteer4.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Estella Fowles
-                                    </div>
-                                    <div class="col column2">
-                                        <img src="../Images/volunteer5.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Rose Lewis
+                                    <img src="../Images/volunteer4.png" class="rounded-circle"
+                                    style="height:60px;width:60px" />Estella Fowles
                                     </div>
                                     <div class="col column2">
-                                        <img src="../Images/volunteer6.png" class="rounded-circle"
-                                             style="height:60px;width:60px" />Raymond Pabon
+                                    <img src="../Images/volunteer5.png" class="rounded-circle"
+                                    style="height:60px;width:60px" />Rose Lewis
                                     </div>
-                                </div>
+                                    <div class="col column2">
+                                    <img src="../Images/volunteer6.png" class="rounded-circle"
+                                    style="height:60px;width:60px" />Raymond Pabon
+                                    </div>
+                                    </div>*@
                                 <div class="row">
                                     <div class="col column2">
                                         <img src="/images/volunteer7.png" class="rounded-circle"
@@ -734,90 +722,115 @@
 
 
         <script>
-                        //-------------------------Rating for the Mission-------------------------
-                            function ratemission(starId, missionId, id) {
-                            $.ajax({
-                                url: '/Home/AddRating',
-                                type: 'POST',
-                                data: { missionId: missionId, id: id, rating: starId },
-                                success: function (result) {
-                                    if (parseInt(result.ratingExists.rating),10) {
-                                        // Update the heart icon to show that the mission has been liked
-                                        for (i = 1; i <= parseInt(result.ratingExists.rating, 10); i++) {
-
-                                            var starbtn = document.querySelector('.star-' + i);
-                                            starbtn.style.color = "#F88634";
-                                        }
-                                        for (i = parseInt(result.ratingExists.rating, 10) + 1; i <= 5; i++) {
-
-                                            var starbtn = document.querySelector('.star-' + i);
-                                            starbtn.style.color = "black";
-                                        }
-                                    } else {
-                                        // Update the heart icon to show that the mission has been unliked
-                                        for (i = 1; i <= parseInt(result.newRating.rating, 10); i++) {
-
-                                            var starbtn = document.getElementById(String(i));
-
-                                            starbtn.style.color = "#F88634";
-                                        }
-                                        for (i = parseInt(result.newRating.rating, 10) + 1; i <= 5; i++) {
-
-                                            var starbtn = document.getElementById(String(i));
-
-                                            starbtn.style.color = "black";
-                                        }
-                                    }
-                                },
-                                error: function () {
-                                    // Handle error response from the server, e.g. show an error message to the user
-                                    alert('Error: Could not like mission.');
-                                }
-                            });
-                        }
-
-
-                        //--------------------------Add to Favroite Mission--------------------------------------------
-                                                function addtofav1(missionId, Id) {
+                                    //-------------------------Rating for the Mission-------------------------
+                                        function ratemission(starId, missionId, id) {
                                         $.ajax({
-                                            url: '/Home/Addfav',
+                                            url: '/Home/AddRating',
                                             type: 'POST',
-                                            data: { missionId: missionId, Id: Id },
+                                            data: { missionId: missionId, id: id, rating: starId },
                                             success: function (result) {
-                                                if (result.favmission == "0") {
-                                                    var favbtn = document.getElementById("favmissiondiv");
-                                                    var heartbtn = document.getElementById("heart");
-                                                    heartbtn.style.color = "#F88634";
-                                                    favbtn.style.color = "orange"
+                                                if (parseInt(result.ratingExists.rating),10) {
+                                                    // Update the heart icon to show that the mission has been liked
+                                                    for (i = 1; i <= parseInt(result.ratingExists.rating, 10); i++) {
+
+                                                        var starbtn = document.querySelector('.star-' + i);
+                                                        starbtn.style.color = "#F88634";
+                                                    }
+                                                    for (i = parseInt(result.ratingExists.rating, 10) + 1; i <= 5; i++) {
+
+                                                        var starbtn = document.querySelector('.star-' + i);
+                                                        starbtn.style.color = "black";
+                                                    }
+                                                } else {
+                                                    // Update the heart icon to show that the mission has been unliked
+                                                    for (i = 1; i <= parseInt(result.newRating.rating, 10); i++) {
+
+                                                        var starbtn = document.getElementById(String(i));
+
+                                                        starbtn.style.color = "#F88634";
+                                                    }
+                                                    for (i = parseInt(result.newRating.rating, 10) + 1; i <= 5; i++) {
+
+                                                        var starbtn = document.getElementById(String(i));
+
+                                                        starbtn.style.color = "black";
+                                                    }
                                                 }
-                                                else {
-                                                    var favbtn = document.getElementById("favmissiondiv");
-                                                    var heartbtn = document.getElementById("heart");
-                                                    heartbtn.style.color = "black";
-                                                    favbtn.style.color = "black"
-                                                }
+                                            },
+                                            error: function () {
+                                                // Handle error response from the server, e.g. show an error message to the user
+                                                alert('Error: Could not like mission.');
                                             }
                                         });
                                     }
 
-                        //Comments---------------------------
-            function PostComment() {
-                var textBox = document.getElementById("commentarea");
-                var commentVal = textBox.value;
-                console.log(commentVal);
-                const params = new URLSearchParams(window.location.search);
-                const query = params.get('missionid');
-                $.ajax({
-                    url: "/Home/PostComment",
-                    data: { missionId: query, Content: commentVal },
-                    success: function (result) {
-                    window.location.reload();
-                },
-                error: function () {
-                alert("Error : Comment has not been posted");
-            }
-            });
-            }
+
+                                    //--------------------------Add to Favroite Mission--------------------------------------------
+                                                            function addtofav1(missionId, Id) {
+                                                    $.ajax({
+                                                        url: '/Home/Addfav',
+                                                        type: 'POST',
+                                                        data: { missionId: missionId, Id: Id },
+                                                        success: function (result) {
+                                                            if (result.favmission == "0") {
+                                                                var favbtn = document.getElementById("favmissiondiv");
+                                                                var heartbtn = document.getElementById("heart");
+                                                                heartbtn.style.color = "#F88634";
+                                                                favbtn.style.color = "orange"
+                                                            }
+                                                            else {
+                                                                var favbtn = document.getElementById("favmissiondiv");
+                                                                var heartbtn = document.getElementById("heart");
+                                                                heartbtn.style.color = "black";
+                                                                favbtn.style.color = "black"
+                                                            }
+                                                        }
+                                                    });
+                                                }
+
+                                    //Comments---------------------------
+                        function PostComment() {
+                            var textBox = document.getElementById("commentarea");
+                            var commentVal = textBox.value;
+                            console.log(commentVal);
+                            const params = new URLSearchParams(window.location.search);
+                            const query = params.get('missionid');
+                            $.ajax({
+                                url: "/Home/PostComment",
+                                data: { missionId: query, Content: commentVal },
+                                success: function (result) {
+                                window.location.reload();
+                            },
+                            error: function () {
+                            alert("Error : Comment has not been posted");
+                        }
+                        });
+                        }
+
+                        //coworker
+           function sendmail(id) {
+const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
+var send = document.getElementById("sendmail");
+send.innerHTML="Sending"
+$.ajax({
+url: '/Home/Sendmail',
+type: 'POST',
+data: { userid: mail ,id:id},
+success: function (result) {
+alert("Recomendations sent successfully!");
+const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
+checkboxes.forEach((checkbox) => {
+checkbox.checked = false;
+});
+send.innerHTML="sent"
+},
+error: function () {
+// Handle error response from the server, e.g. show an error message to the user
+alert('Error: Could not recommend mission.');
+}
+});
+
+}
         </script>
 </body>
 </html>

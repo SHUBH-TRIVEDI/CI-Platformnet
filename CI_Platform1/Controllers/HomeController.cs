@@ -1,4 +1,4 @@
-﻿using CI.Models;
+﻿//using CI.Models;
 using CI_Entities1.Data;
 using CI_Entities1.Models;
 using CI_Platform1.Models;
@@ -47,6 +47,13 @@ namespace CI_Platform1.Controllers
 
         public IActionResult LandingPage(long id, string SearchingMission, int? pageIndex, int cntry, int Order, long[] ACountries, long[] ACities, long[] Atheme)
         {
+            List<User> Alluser = _CiPlatformContext.Users.ToList();
+            ViewBag.alluser = Alluser;
+
+            List<VolunteeringVM> relatedlist = new List<VolunteeringVM>();
+            VolunteeringVM volunteeringVM = new VolunteeringVM();
+            ViewBag.Missiondetail = volunteeringVM;
+
 
             List<Mission> mission = _CiPlatformContext.Missions.ToList();
             ViewBag.listofmission = mission;
@@ -409,6 +416,9 @@ namespace CI_Platform1.Controllers
             var userid = HttpContext.Session.GetString("userID");
             ViewBag.UserId = int.Parse(userid);
 
+            List<User> Alluser = _CiPlatformContext.Users.ToList();
+            ViewBag.alluser = Alluser;
+
             ViewBag.user = _CiPlatformContext.Users.FirstOrDefault(e => e.UserId == id);
             List<VolunteeringVM> relatedlist = new List<VolunteeringVM>();
 
@@ -439,6 +449,7 @@ namespace CI_Platform1.Controllers
             if (prevRating != null) { volunteeringVM.UserPrevRating = prevRating.Rating; }
             volunteeringVM.GoalObjectiveText = themeobjective.GoalObjectiveText;
             ViewBag.Missiondetail = volunteeringVM;
+
 
             //Related Missions
             var relatedmission = _CiPlatformContext.Missions.Where(m => m.ThemeId == volmission.ThemeId && m.MissionId != missionid).ToList();
@@ -475,6 +486,8 @@ namespace CI_Platform1.Controllers
             ViewBag.relatedmission = relatedlist.Take(3);
             return View(selected);
         }
+
+        //Add to favrouite
         [HttpPost]
         public async Task<IActionResult> Addfav(long Id, long missionId)
         {
@@ -515,6 +528,40 @@ namespace CI_Platform1.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //--------REccomend to coworker--------
+
+        [HttpPost]
+        public async Task<IActionResult> Sendmail(long[] userid, int id)
+        {
+
+
+            foreach (var item in userid)
+            {
+                var user = _CiPlatformContext.Users.FirstOrDefault(u => u.UserId == item);
+                var resetLink = Url.Action("Volunteering", "Home", new { user = user.UserId, missionId = id }, Request.Scheme);
+
+                var fromAddress = new MailAddress("officehl1882@gmail.com", "Sender Name");
+                var toAddress = new MailAddress(user.Email);
+                var subject = "Password reset request";
+                var body = $"Hi,<br /><br />This is to <br /><br /><a href='{resetLink}'>{resetLink}</a>";
+                var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential("officehl1882@gmail.com", "yedkuuhuklkqfzwx"),
+                    EnableSsl = true
+                };
+                smtpClient.Send(message);
+
+            }
+            return Json(new { success = true });
         }
 
         //-------------------------------Rating---------------------------
