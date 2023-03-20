@@ -41,6 +41,6 @@
         public string content { get; set; }
         public DateTime created_at { get; set; }
 
-     public List<FavoriteMission> favoriteMissions { get; set; }
+
     }
 }

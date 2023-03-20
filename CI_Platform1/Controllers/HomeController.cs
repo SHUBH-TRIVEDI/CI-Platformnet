@@ -55,7 +55,7 @@ namespace CI_Platform1.Controllers
             ViewBag.Missiondetail = volunteeringVM;
 
 
-            List<Mission> mission = _CiPlatformContext.Missions.ToList();
+            List<Mission> mission = _CiPlatformContext.Missions.Include(x => x.MissionRatings).ToList();
             ViewBag.listofmission = mission;
             List<Mission> finalmission = _CiPlatformContext.Missions.ToList();
             List<Mission> newmission = _CiPlatformContext.Missions.ToList();
@@ -75,6 +75,26 @@ namespace CI_Platform1.Controllers
             //User Admin Name
             var  userid = HttpContext.Session.GetString("userID");
             ViewBag.UserId = int.Parse(userid);
+
+            int finalrating = 0;
+            foreach(var missions in mission)
+            {
+                var ratinglist = _CiPlatformContext.MissionRatings.Where(m => m.MissionId == missions.MissionId).ToList();
+                if (ratinglist.Count() > 0)
+                {
+                    int rat = 0;
+                    foreach (var m in ratinglist)
+                    {
+                        rat = rat + int.Parse(m.Rating);
+
+
+                    }
+                    finalrating = rat / ratinglist.Count();
+                }
+            }
+            
+            ViewBag.finalrating=finalrating;
+
 
             if (userid == null)
             {
@@ -413,6 +433,9 @@ namespace CI_Platform1.Controllers
         public IActionResult volunteering(long missionid, long id, long missionId)
             
         {
+            List<Mission> mission = _CiPlatformContext.Missions.ToList();
+            ViewBag.listofmission = mission;
+
             var userid = HttpContext.Session.GetString("userID");
             ViewBag.UserId = int.Parse(userid);
 
@@ -462,6 +485,25 @@ namespace CI_Platform1.Controllers
                 string[] Startdate1 = item.StartDate.ToString().Split(" ");
                 string[] Enddate2 = item.EndDate.ToString().Split(" ");
 
+
+                int finalrating = 0;
+                foreach (var missions in mission)
+                {
+                    var ratinglist = _CiPlatformContext.MissionRatings.Where(m => m.MissionId == missions.MissionId).ToList();
+                    if (ratinglist.Count() > 0)
+                    {
+                        int rat = 0;
+                        foreach (var m in ratinglist)
+                        {
+                            rat = rat + int.Parse(m.Rating);
+
+
+                        }
+                        finalrating = rat / ratinglist.Count();
+                    }
+                }
+
+                ViewBag.finalrating = finalrating;
 
 
                 relatedlist.Add(new VolunteeringVM

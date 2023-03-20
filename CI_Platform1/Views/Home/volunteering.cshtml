@@ -19,50 +19,6 @@
     <link rel="stylesheet" type="text/css" href="/css/volunteering.css" asp-append-version="true">
 </head>
 
-<style>
-    /*CARD*/
-    .card-img {
-        position: relative;
-    }
-
-    .pin {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.514);
-        border-radius: 50px;
-        top: 15px;
-        right: 10px;
-    }
-
-    .heart {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.514);
-        border-radius: 50%;
-        top: 100px;
-        right: 12px;
-    }
-
-    .share {
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.514);
-        border-radius: 50%;
-        top: 150px;
-        right: 12px;
-    }
-
-    .env {
-        position: absolute;
-        color: #7d7d7d;
-        background-color: white;
-        border-radius: 40px;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-        width: fit-content;
-        bottom: -16px;
-    }
-    /*card*/
-</style>
-
 <body>
 
 
@@ -166,7 +122,7 @@
                         <i class="bi bi-heart-fill" id="heart"></i>
                         <label class="ms-2" id="favmissiondiv">ADD to Favourite</label>
                     </button>
-
+                   
                     @* <button class="btn col ton " type="button">
                         <i class="bi bi-square-fill"></i>
                         <span class="font-si">Recommend to a Co-Worker</span>
@@ -382,11 +338,11 @@
                                                      width="52" alt="">
                                                 </div>
                                                 <div class="ms-3">
-                                                    <p style="margin-left: 1rem;">@i.User.FirstName @i.User.LastName</p>
-                                                    <p style="margin: 0 0 0 1rem;">
+                                                    <p  class="mt-2">@i.User.FirstName @i.User.LastName</p>
+                                                    <p >
                                                         @i.Comment1
                                                     </p>
-                                                    <p style="margin: 0.5rem 0 0 1rem;">@i.CreatedAt.ToString("dddd, dd MMMM yyyy , hh:mm tt")</p>
+                                                    <p >@i.CreatedAt.ToString("dddd, dd MMMM yyyy , hh:mm tt")</p>
 
                                                 </div>
                                             </div>
@@ -425,14 +381,32 @@
                             <tr>
                                 <td>Rating</td>
                                 <td>
-                                    <div>
+                                    @* <div>
                                         <img src="../Images/selected-star.png" alt="">
                                         <img src="../Images/selected-star.png" alt="">
                                         <img src="../Images/selected-star.png" alt="">
                                         <img src="../Images/selected-star.png" alt="">
                                         <img src="../Images/selected-star.png" alt="">
                                         <span class="text-secondary">(by 125 volunters)</span>
+                                        </div>
+                                    *@
+                                    <div>
+                                        @if (ViewBag.finalrating != null)
+                                        {
+                                            @for (int i = 0; i < ViewBag.finalrating; i++)
+                                            {
+                                                <img src="~/images/selected-star.png">
+
+                                            }
+                                            @for (int i = ViewBag.finalrating; i < 5; i++)
+                                            {
+                                                <img src="~/images/star.png">
+
+                                            }
+                                        }
                                     </div>
+
+
 
                                 </td>
                             </tr>
@@ -722,115 +696,115 @@
 
 
         <script>
-                                    //-------------------------Rating for the Mission-------------------------
-                                        function ratemission(starId, missionId, id) {
-                                        $.ajax({
-                                            url: '/Home/AddRating',
-                                            type: 'POST',
-                                            data: { missionId: missionId, id: id, rating: starId },
-                                            success: function (result) {
-                                                if (parseInt(result.ratingExists.rating),10) {
-                                                    // Update the heart icon to show that the mission has been liked
-                                                    for (i = 1; i <= parseInt(result.ratingExists.rating, 10); i++) {
+                                                          //-------------------------Rating for the Mission-------------------------
+                                                              function ratemission(starId, missionId, id) {
+                                                              $.ajax({
+                                                                  url: '/Home/AddRating',
+                                                                  type: 'POST',
+                                                                  data: { missionId: missionId, id: id, rating: starId },
+                                                                  success: function (result) {
+                                                                      if (parseInt(result.ratingExists.rating),10) {
+                                                                          // Update the heart icon to show that the mission has been liked
+                                                                          for (i = 1; i <= parseInt(result.ratingExists.rating, 10); i++) {
 
-                                                        var starbtn = document.querySelector('.star-' + i);
-                                                        starbtn.style.color = "#F88634";
-                                                    }
-                                                    for (i = parseInt(result.ratingExists.rating, 10) + 1; i <= 5; i++) {
+                                                                              var starbtn = document.querySelector('.star-' + i);
+                                                                              starbtn.style.color = "#F88634";
+                                                                          }
+                                                                          for (i = parseInt(result.ratingExists.rating, 10) + 1; i <= 5; i++) {
 
-                                                        var starbtn = document.querySelector('.star-' + i);
-                                                        starbtn.style.color = "black";
-                                                    }
-                                                } else {
-                                                    // Update the heart icon to show that the mission has been unliked
-                                                    for (i = 1; i <= parseInt(result.newRating.rating, 10); i++) {
+                                                                              var starbtn = document.querySelector('.star-' + i);
+                                                                              starbtn.style.color = "black";
+                                                                          }
+                                                                      } else {
+                                                                          // Update the heart icon to show that the mission has been unliked
+                                                                          for (i = 1; i <= parseInt(result.newRating.rating, 10); i++) {
 
-                                                        var starbtn = document.getElementById(String(i));
+                                                                              var starbtn = document.getElementById(String(i));
 
-                                                        starbtn.style.color = "#F88634";
-                                                    }
-                                                    for (i = parseInt(result.newRating.rating, 10) + 1; i <= 5; i++) {
+                                                                              starbtn.style.color = "#F88634";
+                                                                          }
+                                                                          for (i = parseInt(result.newRating.rating, 10) + 1; i <= 5; i++) {
 
-                                                        var starbtn = document.getElementById(String(i));
+                                                                              var starbtn = document.getElementById(String(i));
 
-                                                        starbtn.style.color = "black";
-                                                    }
-                                                }
-                                            },
-                                            error: function () {
-                                                // Handle error response from the server, e.g. show an error message to the user
-                                                alert('Error: Could not like mission.');
-                                            }
-                                        });
-                                    }
+                                                                              starbtn.style.color = "black";
+                                                                          }
+                                                                      }
+                                                                  },
+                                                                  error: function () {
+                                                                      // Handle error response from the server, e.g. show an error message to the user
+                                                                      alert('Error: Could not like mission.');
+                                                                  }
+                                                              });
+                                                          }
 
 
-                                    //--------------------------Add to Favroite Mission--------------------------------------------
-                                                            function addtofav1(missionId, Id) {
-                                                    $.ajax({
-                                                        url: '/Home/Addfav',
-                                                        type: 'POST',
-                                                        data: { missionId: missionId, Id: Id },
-                                                        success: function (result) {
-                                                            if (result.favmission == "0") {
-                                                                var favbtn = document.getElementById("favmissiondiv");
-                                                                var heartbtn = document.getElementById("heart");
-                                                                heartbtn.style.color = "#F88634";
-                                                                favbtn.style.color = "orange"
-                                                            }
-                                                            else {
-                                                                var favbtn = document.getElementById("favmissiondiv");
-                                                                var heartbtn = document.getElementById("heart");
-                                                                heartbtn.style.color = "black";
-                                                                favbtn.style.color = "black"
-                                                            }
-                                                        }
-                                                    });
-                                                }
+                                                          //--------------------------Add to Favroite Mission--------------------------------------------
+                                                                                  function addtofav1(missionId, Id) {
+                                                                          $.ajax({
+                                                                              url: '/Home/Addfav',
+                                                                              type: 'POST',
+                                                                              data: { missionId: missionId, Id: Id },
+                                                                              success: function (result) {
+                                                                                  if (result.favmission == "0") {
+                                                                                      var favbtn = document.getElementById("favmissiondiv");
+                                                                                      var heartbtn = document.getElementById("heart");
+                                                                                      heartbtn.style.color = "#F88634";
+                                                                                      favbtn.style.color = "orange"
+                                                                                  }
+                                                                                  else {
+                                                                                      var favbtn = document.getElementById("favmissiondiv");
+                                                                                      var heartbtn = document.getElementById("heart");
+                                                                                      heartbtn.style.color = "black";
+                                                                                      favbtn.style.color = "black"
+                                                                                  }
+                                                                              }
+                                                                          });
+                                                                      }
 
-                                    //Comments---------------------------
-                        function PostComment() {
-                            var textBox = document.getElementById("commentarea");
-                            var commentVal = textBox.value;
-                            console.log(commentVal);
-                            const params = new URLSearchParams(window.location.search);
-                            const query = params.get('missionid');
-                            $.ajax({
-                                url: "/Home/PostComment",
-                                data: { missionId: query, Content: commentVal },
-                                success: function (result) {
-                                window.location.reload();
-                            },
-                            error: function () {
-                            alert("Error : Comment has not been posted");
-                        }
-                        });
-                        }
+                                                          //Comments---------------------------
+                                              function PostComment() {
+                                                  var textBox = document.getElementById("commentarea");
+                                                  var commentVal = textBox.value;
+                                                  console.log(commentVal);
+                                                  const params = new URLSearchParams(window.location.search);
+                                                  const query = params.get('missionid');
+                                                  $.ajax({
+                                                      url: "/Home/PostComment",
+                                                      data: { missionId: query, Content: commentVal },
+                                                      success: function (result) {
+                                                      window.location.reload();
+                                                  },
+                                                  error: function () {
+                                                  alert("Error : Comment has not been posted");
+                                              }
+                                              });
+                                              }
 
-                        //coworker
-           function sendmail(id) {
-const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
-var send = document.getElementById("sendmail");
-send.innerHTML="Sending"
-$.ajax({
-url: '/Home/Sendmail',
-type: 'POST',
-data: { userid: mail ,id:id},
-success: function (result) {
-alert("Recomendations sent successfully!");
-const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
-checkboxes.forEach((checkbox) => {
-checkbox.checked = false;
-});
-send.innerHTML="sent"
-},
-error: function () {
-// Handle error response from the server, e.g. show an error message to the user
-alert('Error: Could not recommend mission.');
-}
-});
+                                              //coworker
+              function sendmail(id) {
+                      const mail = Array.from(document.querySelectorAll('input[name="mail"]:checked')).map(el => el.id);
+                      var send = document.getElementById("sendmail");
+                      send.innerHTML="Sending"
+                      $.ajax({
+                      url: '/Home/Sendmail',
+                      type: 'POST',
+                      data: { userid: mail ,id:id},
+                      success: function (result) {
+                      alert("Recomendations sent successfully!");
+                      const checkboxes = document.querySelectorAll('input[name="mail"]:checked');
+                      checkboxes.forEach((checkbox) => {
+                      checkbox.checked = false;
+                      });
+                      send.innerHTML="sent"
+                      },
+                      error: function () {
+                      // Handle error response from the server, e.g. show an error message to the user
+                      alert('Error: Could not recommend mission.');
+                      }
+                      });
 
-}
+            }
         </script>
 </body>
 </html>
