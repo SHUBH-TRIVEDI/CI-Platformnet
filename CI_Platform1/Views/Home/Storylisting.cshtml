@@ -1,6 +1,10 @@
-﻿<partial name="Navbar1" />
+﻿@using CI_Entities1.Models.NewFolder
+@model Storylist
 
-<partial name="Navbar2" />
+
+<partial name="Navbar1" />
+
+@*<partial name="Navbar2" />*@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +43,8 @@
 
     <div class="container grid-container">
         <div class="row mt-3 mb-3">
+            @foreach(var item in Model.Stories)
+            {
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
                     <div class="d-inline imgdiv position-relative">
@@ -49,7 +55,7 @@
                                     class="bi bi-arrow-right ms-2 mt-3 "></i></button>
                             <div class="rule" style="margin-top:-20px !important;">
                                 <hr>
-                                <button class="hrbtn-img">Enviroment</button>
+                                <button class="hrbtn-img"></button>
                                 <hr>
                             </div>
                         </div>
@@ -57,112 +63,71 @@
 
 
                     <div class="card-body">
-                        <h5 class="card-title">Grow Trees-On the path to environment sustainability</h5>
-                        <p class="card-text text-secondary">Some quick example text to build on the card title and make
-                            up
-                            the bulk
-                            of the card's content.</p>
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text text-secondary">@item.Description</p>
 
                         <div class="col column2"><img src="../Images/volunteer4.png" class="rounded-circle me-1"
-                                style="height:30px;width:30px" />Estella
-                            Fowles</div>
+                                style="height:30px;width:30px" /></div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card">
-                    <div class="d-inline imgdiv position-relative">
-                        <div id="change">
-                            <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
-                                class="card-img-top missionimg" alt="...">
-                            <button class="btn cardbtn btn-view" onclick="viewdetails()">View details <i
-                                    class="bi bi-arrow-right ms-2 mt-3 "></i></button>
-                            <div class="rule" style="margin-top:-20px !important;">
-                                <hr>
-                                <button class="hrbtn-img">Enviroment</button>
-                                <hr>
-                            </div>
-                        </div>
-                    </div>
+            }
 
 
-                    <div class="card-body">
-                        <h5 class="card-title">Grow Trees-On the path to environment sustainability</h5>
-                        <p class="card-text text-secondary">Some quick example text to build on the card title and make
-                            up
-                            the bulk
-                            of the card's content.</p>
-
-                        <div class="col column2"><img src="../Images/volunteer4.png" class="rounded-circle me-1"
-                                style="height:30px;width:30px" />Estella
-                            Fowles</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card">
-                    <div class="d-inline imgdiv position-relative">
-                        <div id="change">
-                            <img src="/Images/Grow-Trees-On-the-path-to-environment-sustainability-login.png"
-                                class="card-img-top missionimg" alt="...">
-                            <button class="btn cardbtn btn-view" onclick="viewdetails()">View details <i
-                                    class="bi bi-arrow-right ms-2 mt-3 "></i></button>
-                            <div class="rule" style="margin-top:-20px !important;">
-                                <hr>
-                                <button class="hrbtn-img">Enviroment</button>
-                                <hr>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="card-body">
-                        <h5 class="card-title">Grow Trees-On the path to environment sustainability</h5>
-                        <p class="card-text text-secondary">Some quick example text to build on the card title and make
-                            up
-                            the bulk
-                            of the card's content.</p>
-
-                        <div class="col column2"><img src="../Images/volunteer4.png" class="rounded-circle me-1"
-                                style="height:30px;width:30px" />Estella
-                            Fowles</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- ...................................Pagination................................... -->
-    <div class="">
-        <nav aria-label="Page navigation example" class="">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link text-secondary" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only  text-secondary">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link text-secondary" href="#">1</a></li>
-                <li class="page-item"><a class="page-link text-secondary " href="#">2</a></li>
-                <li class="page-item"><a class="page-link text-secondary" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link  text-secondary" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only ">Next</span>
-                    </a>
-                </li>
+   <!-- ...................................Pagination................................... -->
+
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+            <ul class="pagination">
+                @if (@ViewBag.currentUrl.Contains('?'))
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == 0 ? "disabled" : "")">
+                        <a class="page-link" href="@ViewBag.currentUrl&pageIndex=@(ViewBag.CurrentPage - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = 0; i < ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@ViewBag.currentUrl&pageIndex=@i">@((i + 1).ToString())</a>
+                        </li>
+                    }
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages - 1 ? "disabled" : "")">
+                        <a class="page-link" href="@ViewBag.currentUrl&pageIndex=@(ViewBag.CurrentPage + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == 0 ? "disabled" : "")">
+                        <a class="page-link" href="@ViewBag.currentUrl?pageIndex=@(ViewBag.CurrentPage - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = 0; i < ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@ViewBag.currentUrl?pageIndex=@i">@((i + 1).ToString())</a>
+                        </li>
+                    }
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages - 1 ? "disabled" : "")">
+                        <a class="page-link" href="@ViewBag.currentUrl?pageIndex=@(ViewBag.CurrentPage + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
-    </div>
-@*    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>*@
+        crossorigin="anonymous"></script>
     <script>
         function viewdetails() {
             alert("shubh ");

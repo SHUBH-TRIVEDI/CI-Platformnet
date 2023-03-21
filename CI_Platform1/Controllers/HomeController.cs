@@ -1,6 +1,7 @@
 ﻿//using CI.Models;
 using CI_Entities1.Data;
 using CI_Entities1.Models;
+using CI_Entities1.Models.NewFolder;
 using CI_Platform1.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -77,6 +78,8 @@ namespace CI_Platform1.Controllers
             List<MissionTheme> themes = _CiPlatformContext.MissionThemes.ToList();
             ViewBag.listoftheme = themes;
 
+            //kaushal
+
             //User Admin Name
             var  userid = HttpContext.Session.GetString("userID");
             ViewBag.UserId = int.Parse(userid);
@@ -106,135 +109,135 @@ namespace CI_Platform1.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            //Country filter
-            if (ACountries != null && ACountries.Length > 0)
-            {
-
-                foreach (var country in ACountries)
-                {
-                    if (i == 0)
-                    {
-                        mission = mission.Where(m => m.CountryId == country + 700).ToList();
-                        i++;
-                    }
-
-                    finalmission = newmission.Where(m => m.CountryId == country).ToList();
-
-                    mission.AddRange(finalmission);
-                    if (mission.Count() == 0)
-                    {
-                        return RedirectToAction("NoMissionFound", "Home");
-                    }
-
-                    //------------------------------------for Button------------------------------ -
-
-                    ViewBag.countryId = country;
-                    if (ViewBag.countryId != null)
-                    {
-                        var countryElement = _CiPlatformContext.Countries.Where(m => m.CountryId == country).ToList();
-                        if (i1 == 0)
-                        {
-                            countries = _CiPlatformContext.Countries.Where(m => m.CountryId == country + 60000).ToList();
-                            i1++;
-                        }
-                        countries.AddRange(countryElement);
-                    }
-                }
-                ViewBag.country = countries;
-            }
-
-            //City Filter
-            if (ACities != null && ACities.Length > 0)
-            {
-                foreach (var city in ACities)
-                {
-                    if (j == 0)
-                    {
-                        mission = mission.Where(m => m.CityId == city + 500).ToList();
-                        j++;
-                    }
-
-                    finalmission = newmission.Where(m => m.CityId == city).ToList();
-
-                    mission.AddRange(finalmission);
-                    if (mission.Count() == 0)
-                    {
-                        return RedirectToAction("NoMissionFound", "Home");
-                    }
-                    ViewBag.city = city;
-                    if (ViewBag.city != null)
-                    {
-                        var city1 = _CiPlatformContext.Cities.Where(m => m.CityId == city).ToList();
-                        if (j1 == 0)
-                        {
-                            Cities = _CiPlatformContext.Cities.Where(m => m.CityId == city + 50000).ToList();
-                            j1++;
-                        }
-                        Cities.AddRange(city1);
-
-                    }
-                }
-                ViewBag.city = Cities;
-                Cities = _CiPlatformContext.Cities.ToList();
-
-
-            }
-
-            //Theme Filter
-            if (Atheme != null && Atheme.Length > 0)
-            {
-
-                foreach (var theme in Atheme)
-                {
-                    if (k == 0)
-                    {
-                        mission = mission.Where(m => m.ThemeId == theme + 700).ToList();
-                        k++;
-                    }
-
-                    finalmission = newmission.Where(m => m.ThemeId == theme).ToList();
-
-                    mission.AddRange(finalmission);
-                    if (mission.Count() == 0)
-                    {
-                        return RedirectToAction("NoMissionFound", "Home");
-                    }
-
-                    //------------------------------------for Button------------------------------ -
-
-                    ViewBag.themeid = theme;
-                    if (ViewBag.themeid != null)
-                    {
-                        var themeElement = _CiPlatformContext.MissionThemes.Where(m => m.MissionThemeId == theme).ToList();
-                        if (k1 == 0)
-                        {
-                            themes = _CiPlatformContext.MissionThemes.Where(m => m.MissionThemeId == theme + 60000).ToList();
-                            k1++;
-                        }
-                        themes.AddRange(themeElement);
-                    }
-                }
-                ViewBag.theme = themes;
-            }
-
-            //Order By
-            //switch (Order)
+            ////Country filter
+            //if (ACountries != null && ACountries.Length > 0)
             //{
-            //    case 1:
-            //        mission = _CiPlatformContext.Missions.OrderBy(e => e.Title).ToList();
-            //        break;
-            //    case 2:
-            //        mission = _CiPlatformContext.Missions.OrderByDescending(e => e.StartDate).ToList();
-            //        break;
-            //    case 3:
-            //        mission = _CiPlatformContext.Missions.OrderBy(e => e.EndDate).ToList();
-            //        break;
-            //    //default:
-            //    //    mission = _CiPlatformContext.Missions.OrderBy(e => e.Theme).ToList();
-            //    //    break;
+
+            //    foreach (var country in ACountries)
+            //    {
+            //        if (i == 0)
+            //        {
+            //            mission = mission.Where(m => m.CountryId == country + 700).ToList();
+            //            i++;
+            //        }
+
+            //        finalmission = newmission.Where(m => m.CountryId == country).ToList();
+
+            //        mission.AddRange(finalmission);
+            //        if (mission.Count() == 0)
+            //        {
+            //            return RedirectToAction("NoMissionFound", "Home");
+            //        }
+
+            //        //------------------------------------for Button------------------------------ -
+
+            //        ViewBag.countryId = country;
+            //        if (ViewBag.countryId != null)
+            //        {
+            //            var countryElement = _CiPlatformContext.Countries.Where(m => m.CountryId == country).ToList();
+            //            if (i1 == 0)
+            //            {
+            //                countries = _CiPlatformContext.Countries.Where(m => m.CountryId == country + 60000).ToList();
+            //                i1++;
+            //            }
+            //            countries.AddRange(countryElement);
+            //        }
+            //    }
+            //    ViewBag.country = countries;
+            //}
+
+            ////City Filter
+            //if (ACities != null && ACities.Length > 0)
+            //{
+            //    foreach (var city in ACities)
+            //    {
+            //        if (j == 0)
+            //        {
+            //            mission = mission.Where(m => m.CityId == city + 500).ToList();
+            //            j++;
+            //        }
+
+            //        finalmission = newmission.Where(m => m.CityId == city).ToList();
+
+            //        mission.AddRange(finalmission);
+            //        if (mission.Count() == 0)
+            //        {
+            //            return RedirectToAction("NoMissionFound", "Home");
+            //        }
+            //        ViewBag.city = city;
+            //        if (ViewBag.city != null)
+            //        {
+            //            var city1 = _CiPlatformContext.Cities.Where(m => m.CityId == city).ToList();
+            //            if (j1 == 0)
+            //            {
+            //                Cities = _CiPlatformContext.Cities.Where(m => m.CityId == city + 50000).ToList();
+            //                j1++;
+            //            }
+            //            Cities.AddRange(city1);
+
+            //        }
+            //    }
+            //    ViewBag.city = Cities;
+            //    Cities = _CiPlatformContext.Cities.ToList();
 
 
             //}
+
+            ////Theme Filter
+            //if (Atheme != null && Atheme.Length > 0)
+            //{
+
+            //    foreach (var theme in Atheme)
+            //    {
+            //        if (k == 0)
+            //        {
+            //            mission = mission.Where(m => m.ThemeId == theme + 700).ToList();
+            //            k++;
+            //        }
+
+            //        finalmission = newmission.Where(m => m.ThemeId == theme).ToList();
+
+            //        mission.AddRange(finalmission);
+            //        if (mission.Count() == 0)
+            //        {
+            //            return RedirectToAction("NoMissionFound", "Home");
+            //        }
+
+            //        //------------------------------------for Button------------------------------ -
+
+            //        ViewBag.themeid = theme;
+            //        if (ViewBag.themeid != null)
+            //        {
+            //            var themeElement = _CiPlatformContext.MissionThemes.Where(m => m.MissionThemeId == theme).ToList();
+            //            if (k1 == 0)
+            //            {
+            //                themes = _CiPlatformContext.MissionThemes.Where(m => m.MissionThemeId == theme + 60000).ToList();
+            //                k1++;
+            //            }
+            //            themes.AddRange(themeElement);
+            //        }
+            //    }
+            //    ViewBag.theme = themes;
+            //}
+
+            //Order By
+            switch (Order)
+            {
+                case 1:
+                    mission = _CiPlatformContext.Missions.OrderBy(e => e.Title).ToList();
+                    break;
+                case 2:
+                    mission = _CiPlatformContext.Missions.OrderByDescending(e => e.StartDate).ToList();
+                    break;
+                case 3:
+                    mission = _CiPlatformContext.Missions.OrderBy(e => e.EndDate).ToList();
+                    break;
+                    //default:
+                    //    mission = _CiPlatformContext.Missions.OrderBy(e => e.Theme).ToList();
+                    //    break;
+
+
+            }
 
 
             //Search Mission
@@ -291,9 +294,22 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
+        //--------------Story Listing-------------------------------
         public IActionResult Storylisting()
         {
-            return View();
+           
+            Storylist storylist = new Storylist();
+            //storylist is the object of class Storylist(it's in CIentities1)
+            storylist.Stories = _CiPlatformContext.Stories.ToList();
+
+            storylist.User8= _CiPlatformContext.Users.ToList();
+            //User8 is the name defined in class by us which equals ton the context file's -> Users 
+            //so all the data from context file comes into variable or object called User8
+
+            storylist.Mission8= _CiPlatformContext.Missions.ToList();
+
+
+            return View(storylist);
         }
 
 
@@ -609,6 +625,27 @@ namespace CI_Platform1.Controllers
 
             }
             return Json(new { success = true });
+        }
+
+        //Filtering
+        public List<Mission> GetFilteredMission(List<Mission> miss, string[] country, string[] city, string[] theme)
+        {
+            if (country.Length > 0)
+            {
+                miss = miss.Where(m => country.Contains(m.Country.Name)).ToList();
+            }
+
+            if (city.Length > 0)
+            {
+                miss = miss.Where(m => city.Contains(m.City.Name)).ToList();
+            }
+
+            if (theme.Length > 0)
+            {
+                miss = miss.Where(m => theme.Contains(m.Theme.Title)).ToList();
+            }
+
+            return miss;
         }
 
         //-------------------------------Rating---------------------------

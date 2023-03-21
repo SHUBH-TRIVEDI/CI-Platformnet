@@ -1,9 +1,9 @@
-﻿@using CI_Entities1.Models
-@model List<CI_Entities1.Models.Mission>
-
+﻿@*@using CI_Entities1.Models
+@model List<CI_Entities1.Models.Mission>*@
+@*
 @{
     var mission = (List<Mission>)ViewData["mission"];
-}
+}*@
 
 <style>
     .filter-list {
@@ -57,7 +57,7 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 Country &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
+                            <ul class="dropdown-menu" id="countryList" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
                                 @if (ViewBag.listofcountry != null)
                                 {
                                     @foreach (var category in ViewBag.listofcountry)
@@ -65,14 +65,14 @@
                                         <li>
                                             <a class="dropdown-item" href="#">
                                                 <div class="form-check">
-                                                    <input class="form-check-input checkbox" type="checkbox" onchange="updateUrlForCountry()" value="@category.Name" id=@category.CountryId name="country" asp-route-cntry="@category.CountryId"/>
-                                                    <label class="form-check-label" for="Checkme1">@category.Name</label>
+                                                    <input class="form-check-input checkbox" onchange="LoadMission()" name="country" type="checkbox" value="@category.Name" id=@category.CountryId />
+                                                    <label class="form-check-label">@category.Name</label>
                                                 </div>
                                             </a>
                                         </li>
+
                                     }
                                 }
-
                             </ul>
                         </div>
                     </li>
@@ -83,7 +83,7 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 City &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="cityList" style="height:140px; width:max-content; overflow-y: auto;">
                                 @if (ViewBag.listofcity != null)
                                 {
                                     @foreach (var category in ViewBag.listofcity)
@@ -91,7 +91,7 @@
                                         <li>
                                             <a class="dropdown-item" href="#">
                                                 <div class="form-check">
-                                                    <input class="form-check-input checkbox" onchange="updateUrlForCity()" name="city" type="checkbox" value="@category.Name" id=@category.CityId />
+                                                    <input class="form-check-input checkbox" onchange="LoadMission()" name="city" type="checkbox" value="@category.Name" id=@category.CityId />
                                                     <label class="form-check-label">@category.Name</label>
                                                 </div>
                                             </a>
@@ -108,7 +108,7 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 Theme &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="~/images/drop-down.png" />
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
+                            <ul class="dropdown-menu" id="themeList" aria-labelledby="dropdownMenuButton" style="height:140px; width:max-content; overflow-y: auto;">
                                 @if (ViewBag.listoftheme != null)
                                 {
                                     @foreach (var category in ViewBag.listoftheme)
@@ -116,8 +116,8 @@
                                         <li>
                                             <a class="dropdown-item" href="#">
                                                 <div class="form-check">
-                                                    <input class="form-check-input checkbox" type="checkbox" value="@category.Title" 
-                                                    onchange="updateUrlForTheme()" name="theme" id=@category.MissionThemeId />
+                                                    <input class="form-check-input checkbox" type="checkbox" value="@category.Title"
+                                                   onchange="LoadMission()" name="theme" id=@category.MissionThemeId />
                                                     <label class="form-check-label" for="Checkme1">@category.Title</label>
                                                 </div>
                                             </a>
@@ -163,94 +163,143 @@
         </div>
     </div>
 </nav>
-<div class="row">
-@if (@ViewBag.country != null)
-{
-    @foreach (var country in @ViewBag.country)
+@*<div class="row">
+    @if (@ViewBag.country != null)
     {
-        <div class="filter ms-2 ps-2 col-1 border" id="co">
-            <span class="ps-1">@country.Name</span><button type="button" class="btn-close me-2" aria-label="Close" onclick="countryBtn(this.id)" id=@country.CountryId></button>
-        </div>
+        @foreach (var country in @ViewBag.country)
+        {
+            <div class="filter ms-2 ps-2 col-1 border" id="co">
+                <span class="ps-1">@country.Name</span><button type="button" class="btn-close me-2" aria-label="Close" onclick="countryBtn(this.id)" id=@country.CountryId></button>
+            </div>
+        }
     }
-}
 
-@if (@ViewBag.city != null)
-{
-    @foreach (var city in @ViewBag.city)
+    @if (@ViewBag.city != null)
     {
-        <div class="filter ms-2 ps-2 col-1 border" id="ci">
-            @city.Name<button type="button" class="btn-close me-2" aria-label="Close" onclick="cityBtn(this.id)" id=@city.CityId></button>
-        </div>
+        @foreach (var city in @ViewBag.city)
+        {
+            <div class="filter ms-2 ps-2 col-1 border" id="ci">
+                @city.Name<button type="button" class="btn-close me-2" aria-label="Close" onclick="cityBtn(this.id)" id=@city.CityId></button>
+            </div>
+        }
     }
-}
 
-@if (@ViewBag.theme != null)
-{
-    @foreach (var theme in @ViewBag.theme)
+    @if (@ViewBag.theme != null)
     {
-        <div class="filter ms-2 ps-2 col-1 border" id="ci">
-            @theme.Title<button type="button" class="btn-close me-2" aria-label="Close" onclick="themeBtn(this.id)" id=@theme.MissionThemeId></button>
-        </div>
+        @foreach (var theme in @ViewBag.theme)
+        {
+            <div class="filter ms-2 ps-2 col-1 border" id="ci">
+                @theme.Title<button type="button" class="btn-close me-2" aria-label="Close" onclick="themeBtn(this.id)" id=@theme.MissionThemeId></button>
+            </div>
+        }
     }
-}
-</div>
+</div>*@
+
 <script>
-               function updateUrlForCountry() {
-                    const country = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(el => el.id);
-                    let url = window.location.href;
-                    let separator = url.indexOf('?') !== -1 ? '&' : '?';
-                    url += separator + 'ACountries=' + country;
-                    window.location.href = url;
-                }
 
-                function updateUrlForCity() {
-                    const city = Array.from(document.querySelectorAll('input[name="city"]:checked')).map(el => el.id);
-                    let url = window.location.href;
-                    let separator = url.indexOf('?') !== -1 ? '&' : '?';
-                    url += separator + 'ACities=' + city;
-                    window.location.href = url;
-                }
+        function LoadMission(result, sortValue) 
+        {
 
-                 function updateUrlForTheme() {
-                    const theme = Array.from(document.querySelectorAll('input[name="theme"]:checked')).map(el => el.id);
-                    let url = window.location.href;
-                    let separator = url.indexOf('?') !== -1 ? '&' : '?';
-                    url += separator + 'Atheme=' + theme;
-                    window.location.href = url;
-                }
-         
-        //Country Function
-        function countryBtn(id)
-        { 
-        let url = window.location.href;
-        const urlParts = url.split('?');
 
-        if (urlParts.length >= 2) {
-        const baseUrl = urlParts.shift();
-        const queryString = urlParts.join('?');
-        const params = new URLSearchParams(queryString);
+        var country = [];
 
-        const countries = params.getAll('ACountries').filter(country => country !== id);
+        $("#countryList").find("input:checked").each(function (i, obj) {
 
-        if (countries.length > 0) {
-        params.delete('ACountries');
-        countries.forEach(country => params.append('ACountries', country));
-        } else {
-        params.delete('ACountries');
+            country.push($(obj).val());
+
+        })
+        var city = [];
+        $("#cityList").find("input:checked").each(function (i, obj) {
+
+            city.push($(obj).val());
+
+        })
+        var theme = [];
+        $("#themeList").find("input:checked").each(function (i, obj) {
+
+            theme.push($(obj).val());
+
+        })
+
+        if (sortValue != null) {
+            sortValue = sortValue;
         }
+        console.log(country)
+        $.ajax({
+            url: '/Home/GetFilteredMission',
+            method: "POST",
+            dataType: "html",
+            data: {  "country": country, "city":city, "theme":theme},
+            success: function (data) {
+                $("#missionList").html("");
+                $("#missionList").html(data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
 
-        const updatedParams = params.toString();
-        if (updatedParams) {
-        url = `${baseUrl}?${updatedParams}`;
-        } else {
-        url = baseUrl;
-        }
+        })
 
-        window.location.href = url;
-        }
-        }
 
-        //city function
+    }
+</script>
+@*<script>
+    function updateUrlForCountry() {
+    const country = Array.from(document.querySelectorAll('input[name="country"]:checked')).map(el => el.id);
+    let url = window.location.href;
+    let separator = url.indexOf('?') !== -1 ? '&' : '?';
+    url += separator + 'ACountries=' + country;
+    window.location.href = url;
+    }
+
+    function updateUrlForCity() {
+    const city = Array.from(document.querySelectorAll('input[name="city"]:checked')).map(el => el.id);
+    let url = window.location.href;
+    let separator = url.indexOf('?') !== -1 ? '&' : '?';
+    url += separator + 'ACities=' + city;
+    window.location.href = url;
+    }
+
+    function updateUrlForTheme() {
+    const theme = Array.from(document.querySelectorAll('input[name="theme"]:checked')).map(el => el.id);
+    let url = window.location.href;
+    let separator = url.indexOf('?') !== -1 ? '&' : '?';
+    url += separator + 'Atheme=' + theme;
+    window.location.href = url;
+    }
+
+    //Country Function
+    function countryBtn(id)
+    {
+    let url = window.location.href;
+    const urlParts = url.split('?');
+
+    if (urlParts.length >= 2) {
+    const baseUrl = urlParts.shift();
+    const queryString = urlParts.join('?');
+    const params = new URLSearchParams(queryString);
+
+    const countries = params.getAll('ACountries').filter(country => country !== id);
+
+    if (countries.length > 0) {
+    params.delete('ACountries');
+    countries.forEach(country => params.append('ACountries', country));
+    } else {
+    params.delete('ACountries');
+    }
+
+    const updatedParams = params.toString();
+    if (updatedParams) {
+    url = `${baseUrl}?${updatedParams}`;
+    } else {
+    url = baseUrl;
+    }
+
+    window.location.href = url;
+    }
+    }
+
+    //city function
 
     function cityBtn(id){
 
@@ -282,14 +331,14 @@
     }
     }
 
-         //Theme function
+    //Theme function
 
     function themeBtn(id){
 
     let url = window.location.href;
     const urlParts = url.split('?');
 
-    if (urlParts.length >= 2) 
+    if (urlParts.length >= 2)
     {
     const baseUrl = urlParts.shift();
     const queryString = urlParts.join('?');
@@ -314,5 +363,7 @@
     window.location.href = url;
     }
     }
-</script>
+    </script>
+*@
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    

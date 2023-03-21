@@ -1,4 +1,4 @@
-﻿namespace CI_Entities1.Models
+﻿namespace CI_Platform1.Models
 {
     public class VolunteeringVM
     {
@@ -40,7 +40,6 @@
         public int mission_id { get; set; }
         public string content { get; set; }
         public DateTime created_at { get; set; }
-
 
     }
 }
