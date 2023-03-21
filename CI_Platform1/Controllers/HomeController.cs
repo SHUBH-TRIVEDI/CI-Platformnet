@@ -45,6 +45,11 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
+        public IActionResult Storyshare()
+        {
+            return View();
+        }
+
         public IActionResult LandingPage(long id, string SearchingMission, int? pageIndex, int cntry, int Order, long[] ACountries, long[] ACities, long[] Atheme)
         {
             List<User> Alluser = _CiPlatformContext.Users.ToList();
