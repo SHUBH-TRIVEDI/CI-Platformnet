@@ -18,6 +18,9 @@ namespace CI_Platform1.Controllers
     {
         int i = 0, i1 = 0, j = 0, j1 = 0, k = 0, k1 = 0;
         private readonly ILogger<HomeController> _logger;
+        private readonly CiPlatformContext _CiPlatformContext;
+
+        public dynamic SearchingMission { get; private set; }
 
         public HomeController(ILogger<HomeController> logger, CiPlatformContext CiPlatformContext)
         {
@@ -25,26 +28,158 @@ namespace CI_Platform1.Controllers
             _logger = logger;
         }
 
+        //login method
         public IActionResult Login()
         {
             HttpContext.Session.Clear();
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _CiPlatformContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
+                var username = model.Email.Split('@')[0];
+                if (user == null)
+                {
+                    ViewBag.Error = "Email or Password has not Matched to the registered Credentials";
+                }
+                else
+                {
+                    HttpContext.Session.SetString("userID", user.UserId.ToString());
+                    HttpContext.Session.SetString("Firstname", user.FirstName);
+
+                    return RedirectToAction("LandingPage", "Home", new { @id = user.UserId });
+                }
+            }
+
+            return View();
+        }
+
+
+
+        //Forget Password Model
         public IActionResult Forget()
         {
             return View();
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Forget(ForgetModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _CiPlatformContext.Users.FirstOrDefault(u => u.Email == model.Email);
+                if (user == null)
+                {
+                    return RedirectToAction("ForgetPass", "Home");
+                }
+
+
+                var token = Guid.NewGuid().ToString();
+
+
+                var passwordReset = new PasswordReset
+                {
+                    Email = model.Email,
+                    Token = token
+                };
+                _CiPlatformContext.PasswordResets.Add(passwordReset);
+                _CiPlatformContext.SaveChanges();
+
+
+                var resetLink = Url.Action("Resetpass", "Home", new { email = model.Email, token }, Request.Scheme);
+
+
+                var fromAddress = new MailAddress("sangareen2019@gmail.com", "Sender Name");
+                var toAddress = new MailAddress(model.Email);
+                var subject = "Password reset request";
+                var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
+                var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential("sangareen2019@gmail.com", "ihjxxitmiyotxpym"),
+                    EnableSsl = true
+                };
+                smtpClient.Send(message);
+
+                return RedirectToAction("Login", "Home");
+            }
+
+            return View();
+        }
+
+
+        //Reset Password
+        public IActionResult Resetpass()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Resetpass(string email, string token)
+        {
+            var passwordReset = _CiPlatformContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
+            if (passwordReset == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            // Pass the email and token to the view for resetting the password
+            var model = new PasswordReset
+            {
+                Email = email,
+                Token = token
+            };
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult Resetpass(Resetpassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Find the user by email
+                var user = _CiPlatformContext.Users.FirstOrDefault(u => u.Email == model.Email);
+                if (user == null)
+                {
+                    return RedirectToAction("Forget", "User");
+                }
+
+                // Find the password reset record by email and token
+                var passwordReset = _CiPlatformContext.PasswordResets.FirstOrDefault(u => u.Email == model.Email && u.Token == model.Token);
+                if (passwordReset == null)
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+
+                // Update the user's password
+                user.Password = model.Password;
+                _CiPlatformContext.SaveChanges();
+
+            }
+
+            return RedirectToAction("Login", "Home");
+        }
+
 
         public IActionResult Registration()
         {
             return View();
         }
 
-        public IActionResult Resetpass()
-        {
-            return View();
-        }
+
 
         public IActionResult Storyshare()
         {
@@ -78,7 +213,6 @@ namespace CI_Platform1.Controllers
             List<MissionTheme> themes = _CiPlatformContext.MissionThemes.ToList();
             ViewBag.listoftheme = themes;
 
-            //kaushal
 
             //User Admin Name
             var  userid = HttpContext.Session.GetString("userID");
@@ -294,6 +428,18 @@ namespace CI_Platform1.Controllers
             return View();
         }
 
+        public IActionResult StoryDetail()
+        {
+            //Reccomend to Coworker
+            List<User> Alluser = _CiPlatformContext.Users.ToList();
+            ViewBag.alluser = Alluser;
+
+            List<VolunteeringVM> relatedlist = new List<VolunteeringVM>();
+            VolunteeringVM volunteeringVM = new VolunteeringVM();
+            ViewBag.Missiondetail = volunteeringVM;
+            return View();
+        }
+
         //--------------Story Listing-------------------------------
         public IActionResult Storylisting()
         {
@@ -315,138 +461,6 @@ namespace CI_Platform1.Controllers
 
 
 
-        private readonly CiPlatformContext _CiPlatformContext;
-
-        public dynamic SearchingMission { get; private set; }
-
-        //login method
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _CiPlatformContext.Users.Where(u => u.Email == model.Email && u.Password == model.Password).FirstOrDefaultAsync();
-                var username = model.Email.Split('@')[0];
-                if (user == null)
-                {
-                    ViewBag.Error = "Email or Password has not Matched to the registered Credentials";
-                }
-                else
-                {
-                    HttpContext.Session.SetString("userID", user.UserId.ToString());
-                    HttpContext.Session.SetString("Firstname", user.FirstName);
-
-                    return RedirectToAction("LandingPage", "Home", new {@id = user.UserId});
-                }
-            }
-
-            return View();
-        }
-
-
-
-        //Forget Password Model
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult Forget(ForgetModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = _CiPlatformContext.Users.FirstOrDefault(u => u.Email == model.Email);
-                if (user == null)
-                {
-                    return RedirectToAction("ForgetPass", "Home");
-                }
-
-
-                var token = Guid.NewGuid().ToString();
-
-
-                var passwordReset = new PasswordReset
-                {
-                    Email = model.Email,
-                    Token = token
-                };
-                _CiPlatformContext.PasswordResets.Add(passwordReset);
-                _CiPlatformContext.SaveChanges();
-
-
-                var resetLink = Url.Action("Resetpass", "Home", new { email = model.Email, token }, Request.Scheme);
-
-
-                var fromAddress = new MailAddress("sangareen2019@gmail.com", "Sender Name");
-                var toAddress = new MailAddress(model.Email);
-                var subject = "Password reset request";
-                var body = $"Hi,<br /><br />Please click on the following link to reset your password:<br /><br /><a href='{resetLink}'>{resetLink}</a>";
-                var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true
-                };
-                var smtpClient = new SmtpClient("smtp.gmail.com", 587)
-                {
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential("sangareen2019@gmail.com", "ihjxxitmiyotxpym"),
-                    EnableSsl = true
-                };
-                smtpClient.Send(message);
-
-                return RedirectToAction("Login", "Home");
-            }
-
-            return View();
-        }
-
-
-        //Reset Password
-        [HttpGet]
-        public IActionResult Resetpass(string email, string token)
-        {
-            var passwordReset = _CiPlatformContext.PasswordResets.FirstOrDefault(u => u.Email == email && u.Token == token);
-            if (passwordReset == null)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            // Pass the email and token to the view for resetting the password
-            var model = new PasswordReset
-            {
-                Email = email,
-                Token = token
-            };
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public IActionResult Resetpass(Resetpassword model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Find the user by email
-                var user = _CiPlatformContext.Users.FirstOrDefault(u => u.Email == model.Email);
-                if (user == null)
-                {
-                    return RedirectToAction("Forget", "User");
-                }
-
-                // Find the password reset record by email and token
-                var passwordReset = _CiPlatformContext.PasswordResets.FirstOrDefault(u => u.Email == model.Email && u.Token == model.Token);
-                if (passwordReset == null)
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-
-                // Update the user's password
-                user.Password = model.Password;
-                _CiPlatformContext.SaveChanges();
-
-            }
-
-            return RedirectToAction("Login", "Home");
-        }
 
 
 
@@ -573,7 +587,7 @@ namespace CI_Platform1.Controllers
                 return Json(new { success = true, favmission = "0" });
             }
         }
-        //comments
+        //------------------comments
         public JsonResult PostComment(int missionId, string Content)
         {
             Comment objComment = new Comment();
@@ -586,14 +600,14 @@ namespace CI_Platform1.Controllers
             return Json(objComment);
         }
 
-        //===============================
+        //--------------------Error--------------------
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //--------REccomend to coworker--------
+        //--------Reccomend to coworker--------
 
         [HttpPost]
         public async Task<IActionResult> Sendmail(long[] userid, int id)
@@ -627,7 +641,7 @@ namespace CI_Platform1.Controllers
             return Json(new { success = true });
         }
 
-        //Filtering
+        //-----------------------------Filtering--------------------
         public List<Mission> GetFilteredMission(List<Mission> miss, string[] country, string[] city, string[] theme)
         {
             if (country.Length > 0)
